@@ -21,12 +21,21 @@ public class commonResult<T> implements Serializable {
      */
     private Integer  state;
 
-
+    /**
+     * 反馈消息
+     */
     private String  message;
 
-    private T  t;
+    /**
+     * 返回的数据
+     */
+    private T  Data;
 
-
+    /**
+     * 两参构造方法
+     * @param state
+     * @param message
+     */
     public commonResult(Integer state,String message){
          this(state,message,null);
     }

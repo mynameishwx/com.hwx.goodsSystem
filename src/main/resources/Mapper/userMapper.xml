@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.userDao">
+    <resultMap id="user" type="com.hwx.goodsSystem.entity.user">
+        <id column="id" property="id" />
+        <result column="user_Name" property="userName"/>
+        <result column="user_Password" property="userPassword"/>
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
+        <result column="salt" property="salt" />
+        <result column="pet_Name" property="petName"/>
+        <result column="image_Url" property="imageUrl"/>
+        <result column="dwell" property="dwell" />
+        <result column="signature" property="signature"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="createUser" keyProperty="id" useGeneratedKeys="true">
+        insert  into  goodsSystem.user(user_Name,user_Password,sex,age,salt,
+                           pet_Name,image_Url,dwell,signature,create_Time,update_Time)
+        values(#{userName},#{userPassword},#{sex},#{age},#{salt},#{petName},
+               #{imageUrl},#{dwell},#{signature},#{createTime},#{updateTime})
+    </insert>
+
+    <delete id="deleteUser"  >
+          delete  from goodsSystem.user  where  id=#{id}
+    </delete>
+
+    <update id="updateUser" keyProperty="id" useGeneratedKeys="true" >
+        update  goodsSystem.user set
+        <if test="petName!=''">pet_Name=#{petName}</if>
+        <if test="petName!='' and imageUrl!=''">and</if>
+        <if test="imageUrl!=''">image_Url=#{imageUrl}</if>
+        <if test="imageUrl!='' and dwell!=''">and</if>
+        <if test="dwell!=''">dwell=#{dwell}</if>
+        <if test="dwell!='' and signature!=''">and</if>
+        <if test="signature!=''">signature=#{signature}</if>
+        update_Time=#{updateTime}  where id=#{id} ;
+    </update>
+
+    <select id="getUserById" resultMap="user" parameterType="integer">
+        select id,user_Name,user_Password,sex,age,salt,pet_Name,image_Url,
+               dwell,signature,create_Time,update_Time from goodsSystem.user
+        where id=#{id};
+    </select>
+
+    <select id="getUser" resultMap="user" parameterType="string">
+        select id,user_Name,user_Password,sex,age,salt,pet_Name,image_Url,
+               dwell,signature,create_Time,update_Time from goodsSystem.user
+        where user_Name=#{userName};
+    </select>
+</mapper>
