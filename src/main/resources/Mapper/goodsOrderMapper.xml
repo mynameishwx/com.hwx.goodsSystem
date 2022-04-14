@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.goodsOrderDao">
+    <resultMap id="goodsOrder" type="com.hwx.goodsSystem.entity.goodsOrder">
+        <id column="id" property="id" />
+        <result column="user_ID" property="userId" />
+        <result column="goods_Id" property="goodsId" />
+        <result column="goods_Number" property="goodsNumber" />
+        <result column="goods_Get_Time" property="goodsGetTime" />
+        <result column="goods_Payment_state" property="goodsPaymentState" />
+        <result column="goods_Payment_Time"  property="goodsPaymentState" />
+        <result column="create_Time" property="createTime" />
+        <result column="update_Time" property="updateTime" />
+    </resultMap>
+
+
+    <insert id="createGoodsOrder"
+    parameterType="com.hwx.goodsSystem.entity.goodsOrder" keyProperty="id" useGeneratedKeys="true">
+        insert into  goodsSystem.goods_order(user_ID, goods_Id,
+                                             goods_Number, goods_Get_Time,
+                                             goods_Payment_state, goods_Payment_Time,
+                                             create_Time, update_Time)
+        values(#{userId},#{goodsId},#{goodsNumber},#{goodsGetTime},#{goodsPaymentstate},
+               #{goodsPaymentTime},#{create_Time},#{update_Time});
+    </insert>
+
+    <delete id="deleteGoodsOrder" parameterType="integer" >
+        delete  from  goodsSystem.goods_order  where id=#{id}
+    </delete>
+
+    <update id="updateGoodsOrder" parameterType="com.hwx.goodsSystem.entity.goodsOrder" keyProperty="id" useGeneratedKeys="true">
+        update goodsSystem.goods_order set  goods_Payment_state=1 where id=#{id};
+    </update>
+
+
+    <select id="getGoodsOrder" resultMap="goodsOrder" parameterType="integer">
+        select id,user_ID, goods_Id,
+               goods_Number, goods_Get_Time,
+               goods_Payment_state, goods_Payment_Time,
+               create_Time, update_Time  from  goodsSystem.goods_order
+        where id=#{id};
+    </select>
+</mapper>

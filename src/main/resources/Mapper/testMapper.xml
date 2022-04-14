@@ -7,6 +7,6 @@
         <result column="message" property="message"/>
     </resultMap>
     <select id="gettest"  resultMap="test"  >
-        select id,message  from  test;
+        select id,message  from  goodsSystem.test;
     </select>
 </mapper>
