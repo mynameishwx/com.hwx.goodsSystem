@@ -1,0 +1,19 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    url: jdbc:mysql://121.5.199.228:3306/goodsSystem?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&useSSL=true&serverTimezone=GMT%2B8
+    name: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    druid:
+      filters: stat,wall
+      stat-view-servlet:
+           enabled: true
+           login-username: hwxadmin
+           login-password: hwx001125
+
+mybatis:
+  mapper-locations: classpath:Mapper/*.xml
