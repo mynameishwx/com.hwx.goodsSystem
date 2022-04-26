@@ -1,14 +1,19 @@
 package com.hwx.goodsSystem.service.IMPL;
 
 import com.hwx.goodsSystem.Dao.userDao;
-import com.hwx.goodsSystem.entity.commonResult;
+import com.hwx.goodsSystem.Dao.userRoleDao;
 import com.hwx.goodsSystem.entity.user;
+import com.hwx.goodsSystem.entity.userRole;
 import com.hwx.goodsSystem.service.userService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -17,59 +22,94 @@ public class userimpl implements userService {
     @Autowired
     private userDao userDao;
 
+    @Autowired
+    private userRoleDao userRoleDao;
+
     @Override
-    public  commonResult<user> createUser(user user) {
-        if(userDao.createUser(user)!=0){
-            return new commonResult<user>(200,"创建用户成功",user);
-        }else{
-            log.info("user创建用户失败  :"+user.toString());
-            return  new  commonResult<user>(500,"创建用户失败",null);
+    /**
+     * 事务处理
+     * 用户注册和用户角色创建(默认为普通用户)
+     */
+    @Transactional
+    public  Integer createUser(user user) {
+        /**
+         * 密码MD5加密
+         */
+        user=this.ShiroMd5(user);
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+
+        userRole userrole=new userRole();
+        /**
+         * 用户注册
+         */
+        userDao.createUser(user);
+        /**
+         * 创建普通用户
+         */
+        userrole.setUserId(user.getId());
+        userrole.setRoleId(1);
+        userrole.setCreateTime(new Date());
+        userrole.setUpdateTime(new Date());
+        userRoleDao.createUserRole(userrole);
+
+        return  1;
+    }
+
+    @Override
+    public  Integer deleteUser(Integer id) {
+       return  userDao.deleteUser(id);
+    }
+
+    @Override
+    public Integer updateUser(user user) {
+        /**
+         * 将修改时间更新
+         */
+        user.setUpdateTime(new Date());
+        return  userDao.updateUser(user);
+    }
+
+    @Override
+    public user getUserById(Integer id) {
+
+        return userDao.getUserById(id);
+    }
+
+    @Override
+    public user getUser(String userNme) {
+        List<user> user=userDao.getUser(userNme);
+        if(user.size()==0){
+            return null;
         }
+        return user.get(0);
     }
 
-    @Override
-    public  commonResult<Integer> deleteUser(Integer id) {
-        if(userDao.deleteUser(id)!=0){
-            return new commonResult<Integer>(200,"删除用户成功",null);
-        }else{
-            log.info("user删除用户失败  id:"+id);
-            return new commonResult<Integer>(500,"删除用户失败,id:"+id,id);
+
+    public user ShiroMd5(user user){
+        /**
+         * 拿到密码
+         */
+        String password=user.getUserPassword();
+        /**
+         * 获取 1到6 长度不定的盐
+         */
+        String saltShiro="b819e0acTc2#P3460*b755^5b@a1%b9&58f";
+        Random Random=new Random();
+        int  x= Random.nextInt(5)+1;
+        String salt="";
+        for (int i = 0; i <x; i++) {
+            x= Random.nextInt(30)+1;
+            salt= String.valueOf(saltShiro.charAt(x))+salt;
         }
+        /**
+         * 进行MD5加密，这里的散列次数要与配置的散列次数一致
+         */
+        Md5Hash Md5Hash=new Md5Hash(password,salt,206);
+
+        user.setUserPassword(Md5Hash.toString());
+        user.setSalt(salt);
+        return user;
     }
 
-    @Override
-    public commonResult<user> updateUser(user user) {
-            boolean update=!user.getPetName().equals("") || !user.getAge().equals("") ||
-                    !user.getDwell().equals("") || user.getSex()!=null ||
-                    !user.getImageUrl().equals("") || !user.getSignature().equals("");
-
-            if(update){
-                if(userDao.updateUser(user)!=0){
-                    return  new commonResult<user>(200,"修改成功");
-                }else{
-                    log.info("user未成功修改  :"+user.toString());
-                    return new commonResult<user>(500,"未成功修改,参数为空:"+user);
-                }
-            }else{
-                log.info("user未成功修改,参数为空:"+user.toString());
-                return new commonResult<user>(400,"未成功修改,参数为空:"+user);
-            }
-    }
-
-    @Override
-    public commonResult<user> getUserById(Integer id) {
-        user user=new user();
-        user =userDao.getUserById(id);
-        if(user!=null){
-          new   commonResult<user>(200,"查询成功 :",user);
-        }else {
-            new commonResult<user>(200,"没有查询该数据,id:"+id,null);
-        }
-        return null;
-    }
-
-    @Override
-    public List<user> getUser(String userNme) {
-        return userDao.getUser(userNme);
-    }
 }

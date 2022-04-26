@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.roleDao">
+
+    <resultMap id="role" type="com.hwx.goodsSystem.entity.role">
+        <id column="id" property="id" />
+        <result column="role_Name" property="roleName"/>
+        <result column="create_Time" property="createTime" />
+        <result column="update_Time" property="updateTime" />
+    </resultMap>
+
+    <insert id="createRole" parameterType="com.hwx.goodsSystem.entity.role" useGeneratedKeys="true" keyProperty="id">
+        insert into goodsSystem.role(role_Name, create_Time, update_Time) VALUES (#{roleName},#{createTime},#{updateTime});
+    </insert>
+
+
+    <delete id="deleteRole" parameterType="integer" >
+        delete from goodsSystem.role where id=#{id};
+    </delete>
+
+    <update id="updateRole" parameterType="com.hwx.goodsSystem.entity.role" keyProperty="id">
+        update goodsSystem.role set role_Name=#{roleName};
+    </update>
+
+
+    <select id="getRoleById" resultMap="role" parameterType="integer" >
+        select  id, role_Name, create_Time, update_Time from goodsSystem.role where id=#{id};
+    </select>
+</mapper>

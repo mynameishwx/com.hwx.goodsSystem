@@ -9,5 +9,20 @@ public interface powerDao {
     /**
      * 增
      */
-//    Integer createPower(power power);
+    Integer createPower(power power);
+
+    /**
+     * 删
+     */
+    Integer deletePower(Integer id);
+
+    /**
+     * 改
+     */
+    Integer updatePower(power power);
+
+    /**
+     * 查
+     */
+    power  getPowerById(Integer id);
 }

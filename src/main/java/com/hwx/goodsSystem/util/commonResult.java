@@ -1,4 +1,4 @@
-package com.hwx.goodsSystem.entity;
+package com.hwx.goodsSystem.util;
 
 
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class commonResult<T> implements Serializable {
     /**
      * 状态码
      */
-    private Integer  state;
+    private Integer  code;
 
     /**
      * 反馈消息
@@ -33,11 +33,11 @@ public class commonResult<T> implements Serializable {
 
     /**
      * 两参构造方法
-     * @param state
+     * @param code
      * @param message
      */
-    public commonResult(Integer state,String message){
-         this(state,message,null);
+    public commonResult(Integer code,String message){
+         this(code,message,null);
     }
 
 }
