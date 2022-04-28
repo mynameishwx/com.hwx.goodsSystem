@@ -16,7 +16,7 @@
         <result column="update_Time" property="updateTime"/>
     </resultMap>
 
-    <insert id="createUser" keyProperty="id" useGeneratedKeys="true">
+    <insert id="createUser" keyProperty="id" useGeneratedKeys="true" parameterType="com.hwx.goodsSystem.entity.user">
         insert  into  goodsSystem.user(user_Name,user_Password,sex,age,salt,
                            pet_Name,image_Url,dwell,signature,create_Time,update_Time)
         values(#{userName},#{userPassword},#{sex},#{age},#{salt},#{petName},

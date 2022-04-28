@@ -10,22 +10,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class user_role implements Serializable {
+public class role implements Serializable {
 
-    private  Integer  id;
+    private  Integer id;
 
     /**
-     * 用户id
+     * 角色
      */
-    private  Integer userId;
+    private String  roleName;
 
     /**
-     * 角色id
-     */
-    private  Integer roleId;
-
-    /**
-     * 用户角色表创建时间
+     * 创建时间
      */
     private Date createTime;
 
@@ -33,4 +28,5 @@ public class user_role implements Serializable {
      * 修改时间
      */
     private Date  updateTime;
+
 }
