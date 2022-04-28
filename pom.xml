@@ -59,7 +59,7 @@
             <version>1.18.22</version>
         </dependency>
 
-        <!--        mybatis-->
+<!--        mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -78,14 +78,23 @@
             <version>2.6.3</version>
         </dependency>
 
-        <!--        springfox-swagger2 -->
+<!--        springfox-swagger2 -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>3.0.0</version>
         </dependency>
+<!--        thymeleaf 视图解析器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
-
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.36</version>
+        </dependency>
     </dependencies>
 
     <build>

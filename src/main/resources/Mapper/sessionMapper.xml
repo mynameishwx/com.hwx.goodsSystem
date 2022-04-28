@@ -33,4 +33,9 @@
         select  id, user_Id, session, create_Time, update_Time from goodssystem.session where
         user_Id=#{userId};
     </select>
+
+    <select id="getSessionBySession" parameterType="string" resultMap="session">
+        select id, user_Id, session, create_Time, update_Time  from goodssystem.session where
+            session=#{session};
+    </select>
 </mapper>

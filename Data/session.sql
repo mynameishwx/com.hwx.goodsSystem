@@ -3,7 +3,7 @@ create table session(
 
                         user_Id  int  not null,
 
-                        session  varchar(50) not null,
+                        session  varchar(200) not null,
 
                         create_Time datetime,
 

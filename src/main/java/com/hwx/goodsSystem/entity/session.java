@@ -12,13 +12,28 @@ import java.util.Date;
 @AllArgsConstructor
 public class session implements Serializable {
 
+    /**
+     * id
+     */
     private  Integer id;
 
+    /**
+     * 用户id
+     */
     private  Integer userId;
 
+    /**
+     * session
+     */
     private  String  session;
 
+    /**
+     * 创建时间
+     */
     private  Date createTime;
 
+    /**
+     * 修改时间
+     */
     private  Date updateTime;
 }

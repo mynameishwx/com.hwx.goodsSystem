@@ -34,4 +34,9 @@ public interface sessionService {
      * 根据用户id查询
      */
     session getSessionByUserId(Integer id);
+
+    /**
+     * 根据session查
+     */
+    session getSessionBySession(String session);
 }

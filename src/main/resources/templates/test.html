@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" src="css/goodsIndex.css">
+<!--  <style>-->
+<!--&lt;!&ndash;   中间的主要框 &ndash;&gt;-->
+<!--    .grid_c1 {-->
+<!--      width: 990px;-->
+<!--    }-->
+<!--.grid_c2 {-->
+<!--  width: 1000px;-->
+<!--}-->
+<!--    .fs_inner {-->
+<!--      z-index: 1;-->
+<!--      height: 480px;-->
+<!--      background-color: #ffffff;-->
+<!--    }-->
+<!--    .fs_inner {-->
+<!--      position: relative;-->
+<!--    }-->
+<!--    .grid_c1 {-->
+<!--      margin: 0 auto;-->
+<!--      width: 990px;-->
+<!--    }-->
+
+<!--/*  *******************************************************  */-->
+
+<!--.feed-tab-wrapper {-->
+<!--  background: #fff;-->
+<!--}-->
+<!--.feed-tab-wrapper {-->
+<!--  background: #fff;-->
+<!--  margin-bottom: 10px;-->
+<!--}-->
+<!--.grid_c1 {-->
+<!--  margin: 0 auto;-->
+<!--  margin-bottom: 0px;-->
+<!--  width: 990px;-->
+<!--}-->
+<!--/*  ul标题  */-->
+<!--.feed-tab__item-title {-->
+<!--  color: #333;-->
+<!--  margin-top: 7px;-->
+<!--  font-size: 16px;-->
+<!--  font-weight: 700;-->
+<!--  line-height: 27px;-->
+<!--  height: 27px;-->
+<!--}-->
+
+<!--.feed-tab {-->
+<!--  margin: 0 auto;-->
+<!--  height: 60px;-->
+<!--  width: 1080px;-->
+<!--}-->
+
+
+<!--.more2_item {-->
+<!--  width: 190px;-->
+<!--  height: 266px;-->
+<!--  margin: 0 5px 8px;-->
+<!--}-->
+<!--.more2_item {-->
+<!--  background: #e7e7ea;-->
+<!--  position: relative;-->
+<!--  float: left;-->
+<!--}-->
+
+<!--li {-->
+<!--  list-style: none;-->
+<!--}-->
+
+
+
+<!--.o2_mini .feed-tab__item {-->
+<!--  width: 150px;-->
+<!--}-->
+<!--.feed-tab__item {-->
+<!--  position: relative;-->
+<!--  float: left;-->
+<!--  width: 180px;-->
+<!--  height: 60px;-->
+<!--  text-align: center;-->
+<!--  cursor: pointer;-->
+<!--}-->
+<!--li {-->
+<!--  list-style:none; /* 将默认的列表符号去掉 */-->
+<!--  padding:0; /* 将默认的内边距去掉 */-->
+<!--  margin:0; /* 将默认的外边距去掉 */-->
+<!--}-->
+<!--* {-->
+<!--  margin: 0;-->
+<!--  padding: 0;-->
+<!--}-->
+<!--/*  商品大框*/-->
+<!--.clearfix::after {-->
+<!--  visibility: hidden;-->
+<!--  clear: both;-->
+<!--  display: block;-->
+<!--  content: ".";-->
+<!--  height: 0;-->
+<!--}-->
+<!--/*蓝色间隔 */-->
+<!--    .tap_gap{-->
+<!--      position: absolute;-->
+<!--      right: 0;-->
+<!--      top: 0;-->
+<!--      height: 40px;-->
+<!--      margin: 10px 0;-->
+<!--      width: 1px;-->
+<!--      background: #dfdfdf;-->
+<!--      background: -webkit-gradient(linear,left top,left bottom,from(white),color-stop(51%, #549bcb),to(white));-->
+<!--      background: linear-gradient(180deg,white, #549bcb 51%,white);-->
+<!--    }-->
+<!--  </style>-->
+
+</head>
+<body bgcolor="#c0cbcc">
+<nav class="navbar navbar-default" id="parent">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img alt="Brand" height="30" src="img/hwx.png" width="80">
+      </a>
+      <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/index}">首页 <span class="sr-only">(current)</span></a></li>
+        <li><a th:href="@{/goods/showGoods}">我的订单</a></li>
+        <li><a th:href="@{/goods/wishGoods}">购物车</a></li>
+        <!--                <li class="dropdown">-->
+        <!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+        <!--                    <ul class="dropdown-menu">-->
+        <!--                        <li><a href="#">Action</a></li>-->
+        <!--                        <li><a href="#">Another action</a></li>-->
+        <!--                        <li><a href="#">Something else here</a></li>-->
+        <!--                        <li role="separator" class="divider"></li>-->
+        <!--                        <li><a href="#">Separated link</a></li>-->
+        <!--                        <li role="separator" class="divider"></li>-->
+        <!--                        <li><a href="#">One more separated link</a></li>-->
+        <!--                    </ul>-->
+        <!--                </li>-->
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input class="form-control" placeholder="Search" type="text">
+        </div>
+        <button class="btn btn-default" type="submit">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li th:if="${userLogin}==null"><a th:href="@{/login}">登录</a></li>
+        <li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
+        <li class="dropdown" th:if="${userLogin}!=null">
+          <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" onclick="xia()" role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>
+            <li><a href="#">我的钱包</a></li>
+            <li><a href="#">我的信息</a></li>
+            <li class="divider" role="separator"></li>
+            <li><a th:href="@{/loginOut}">退出登录</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<!--   商品实体-->
+
+<div class="grid_c1 fs_inner" >
+  <div class="grid_c1 feed-tab-wrapper">
+   <ul class="feed-tab">
+      <li class="feed-tab__item feed-tab__item--active">
+          <div class="feed-tab__item-title">
+              <span>精华</span>
+          </div>
+        <div class="tap_gap"></div>
+      </li>
+     <li class="feed-tab__item  feed-tab__item--active " >
+       dfasdfsdfgsdfg
+       <div class="tap_gap"></div>
+     </li>
+     <li class="feed-tab__item feed-tab__item--active">
+       dfasdfsdfgsdfg
+     </li>
+   </ul>
+  </div>
+  <div class="grid_c2">
+    <ul class="clearfix">
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+      <li class="more2_item hover-on">sdsdsadasd</li>
+
+    </ul>
+  </div>
+</div>
+</body>
+</html>
