@@ -45,4 +45,11 @@ public class sessionimpl implements sessionService {
         sessions= sessionDao.getSessionByUserId(id);
         return sessions.get(0);
     }
+
+    @Override
+    public session getSessionBySession(String session) {
+        List<session> sessions=new ArrayList<>();
+        sessions= sessionDao.getSessionBySession(session);
+        return sessions.get(0);
+    }
 }

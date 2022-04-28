@@ -1,6 +1,5 @@
 package com.hwx.goodsSystem.Controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.entity.user;
 import com.hwx.goodsSystem.entity.userRole;
@@ -9,26 +8,23 @@ import com.hwx.goodsSystem.service.sessionService;
 import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
 import com.hwx.goodsSystem.util.commonResult;
-import lombok.extern.java.Log;
+import com.hwx.goodsSystem.util.goodsJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
-@RestController
-/**
- * 解决跨域问题，这个类所有接口同意 http://127.0.0.1:8080 跨域访问
- */
-@CrossOrigin(origins ="http://127.0.0.1:8080")
-
-@RequestMapping("/Login")
+@Controller
+@RequestMapping("/login")
 public class enterCont {
 
     @Autowired
@@ -43,10 +39,20 @@ public class enterCont {
     @Autowired
     private userRoleService userRoleService;
 
+    @Autowired
+    private goodsJWT goodsJWT;
+
+    @GetMapping("")
+    public String login(Map<String,String> map){
+        map.put("name","");
+        return "login";
+    }
+
     @PostMapping("/enter")
-    public commonResult<user> enter(@RequestParam("name")String name,
+    public String enter(@RequestParam("name")String name,
                                       @RequestParam("password")String password,
-                                      HttpSession HttpSession) throws  RuntimeException{
+                                      HttpSession HttpSession,
+                                      Map<String,String> map) throws  RuntimeException{
         Subject Subject= SecurityUtils.getSubject();
         /**
          *  获取正在登录的用户的信息
@@ -54,7 +60,8 @@ public class enterCont {
         user user=new user();
         user= userService.getUser(name);
         if(user==null){
-            return     new commonResult<user>(500,"用户未注册",null);
+            map.put("Tshi","用户未注册,去注册");
+            return  "login";
         }
         /**
          * shiro登录验证
@@ -63,9 +70,16 @@ public class enterCont {
         Subject.login(token);
 
         /**
-         * 将session存储
+         * 产生JWT令牌
          */
-        String session= UUID.randomUUID().toString();
+        String sessionUUID= UUID.randomUUID().toString();
+        Map<String,String> StringMap=new HashMap<>();
+        StringMap.put("session",sessionUUID);
+        String session=goodsJWT.getJwt(StringMap);
+
+        /**
+         * 将jwt令牌当成session存入数据库
+         */
         sessionService.createSession(new session(null,user.getId(),session,null,null));
 
         /**
@@ -90,22 +104,24 @@ public class enterCont {
         user.setSalt(null);
         user.setUpdateTime(null);
         user.setCreateTime(null);
-        return  new commonResult<user>(200,"成功登录",user);
+        return  "redirect:/";
     }
 
 
-    @PostMapping("/Proven")
-    public commonResult<String> loginProven(@RequestParam("name")String name){
+    @ResponseBody
+    @GetMapping("/Proven")
+    public String loginProven(String name){
         if(userService.getUser(name)!=null){
-            return  new commonResult<>(20,null);
+            return  null;
         }else {
-            return  new commonResult<>(304,"用户名未注册");
+            return  name;
         }
     }
     @PostMapping("/enroll")
-    public commonResult<String> enroll(@RequestParam(value = "name")String name,
+    public String enroll(@RequestParam(value = "name")String name,
                                        @RequestParam(value = "password")String password,
-                                       @RequestParam(value = "passwordTwo")String passwordTwo) {
+                                       @RequestParam(value = "passwordTwo")String passwordTwo,
+                                       Map<String,String> map) {
         if (password.equals(passwordTwo)) {
             if (!name.equals("") && !password.equals("")) {
                 user user = new user();
@@ -113,12 +129,14 @@ public class enterCont {
                 user.setUserPassword(password);
                 userService.createUser(user);
             } else {
-                return new commonResult<>(500, "参数为空");
+                map.put("Tshi","参数为空!");
+                return "enroll";
             }
 
-            return new commonResult<>(200, "注册成功");
+            return "redirect:/";
         }else {
-            return  new commonResult<>(500, "密码不一致");
+            map.put("Tshi","密码不一致!");
+            return  "enroll";
         }
     }
 

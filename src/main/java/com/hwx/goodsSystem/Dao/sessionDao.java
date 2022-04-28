@@ -36,4 +36,9 @@ public interface sessionDao {
      * 根据用户id查询
      */
     List<session> getSessionByUserId(Integer id);
+
+    /**
+     * 根据session查
+     */
+    List<session> getSessionBySession(String session);
 }
