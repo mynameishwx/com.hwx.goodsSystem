@@ -1,9 +1,12 @@
 package com.hwx.goodsSystem.Component;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.hwx.goodsSystem.entity.role;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.entity.user;
+import com.hwx.goodsSystem.service.roleService;
 import com.hwx.goodsSystem.service.sessionService;
+import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
 import com.hwx.goodsSystem.util.goodsJWT;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
@@ -30,6 +33,11 @@ public class goodsPand implements HandlerInterceptor {
     @Autowired
     private userService userService;
 
+    @Autowired
+    private userRoleService userRoleService;
+
+    @Autowired
+    private roleService roleService;
     /**
      * 导入ThreadLocal
      */
@@ -53,19 +61,25 @@ public class goodsPand implements HandlerInterceptor {
                /**
                 * 查询session
                 */
-               session session=sessionService.getSessionBySession(token);
-               /**
-                * 将查询到的user装入ThreadLocal
-                */
-               goodsThreadLocal.setUser(userService.getUserById(session.getUserId()));
+               session session=new session();
+               session=sessionService.getSessionBySession(token);
+              if(session!=null){
+                  /**
+                   * 将查询到的user装入ThreadLocal
+                   */
+                  goodsThreadLocal.setUser(userService.getUserById(session.getUserId()));
+              }
            }catch (Exception e){
                 e.printStackTrace();
                /**
                 * 令牌有问题，或者没有查询到session，则将user信息卸掉和将过期的session删除
                 */
                goodsThreadLocal.setUser(null);
-               session session=sessionService.getSessionBySession(token);
-               sessionService.deleteSessionByid(session.getId());
+               session session=new session();
+               session=sessionService.getSessionBySession(token);
+               if(session!=null){
+                   sessionService.deleteSessionByid(session.getId());
+               }
            }
        }
         return true;
@@ -80,11 +94,22 @@ public class goodsPand implements HandlerInterceptor {
             /**
              * 将密码与盐隐藏
              */
-            user.setSalt(null);
             user.setUserPassword(null);
             if(user.getImageUrl()==null){
                 user.setImageUrl("/img/hwx.png");
             }
+            /**
+             * 将角色传递给前端
+             */
+            role role= roleService.getRoleById(userRoleService.getUserRoleByUserId(goodsThreadLocal.getUser().getId()).getRoleId());
+            modelAndView.addObject("role",role.getRoleName());
+            /**
+             * 置空
+             */
+            user.setSalt(null);
+            /**
+             * 将user信息持有
+             */
             modelAndView.addObject("userLogin",user);
         }
     }

@@ -17,6 +17,11 @@ public interface sessionService {
      */
     Integer deleteSessionByid(Integer id);
 
+    /**
+     * 根据用户id删除
+     */
+    Integer deleteSessionByUserId(Integer id);
+
 
     /**
      * 改

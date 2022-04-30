@@ -6,6 +6,8 @@ import com.hwx.goodsSystem.service.roleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class roleimpl implements roleService {
 
@@ -14,6 +16,8 @@ public class roleimpl implements roleService {
 
     @Override
     public Integer createRole(role role) {
+        role.setCreateTime(new Date());
+        role.setUpdateTime(new Date());
         return roleDao.createRole(role);
     }
 
@@ -24,6 +28,7 @@ public class roleimpl implements roleService {
 
     @Override
     public Integer updateRole(role role) {
+        role.setUpdateTime(new Date());
         return updateRole(role);
     }
 

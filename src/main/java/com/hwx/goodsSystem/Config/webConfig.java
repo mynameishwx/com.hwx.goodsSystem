@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,8 +20,8 @@ public class webConfig implements WebMvcConfigurer {
          public void addViewControllers(ViewControllerRegistry registry) {
             registry.addViewController("").setViewName("index");
             registry.addViewController("/").setViewName("index");
-            registry.addViewController("/login").setViewName("login");
             registry.addViewController("/enroll").setViewName("enroll");
+            registry.addViewController("/setting").setViewName("setting");
          }
       };
       return WebMvcConfigurer;

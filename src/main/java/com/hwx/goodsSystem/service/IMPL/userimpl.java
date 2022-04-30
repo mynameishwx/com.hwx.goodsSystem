@@ -36,6 +36,9 @@ public class userimpl implements userService {
          * 密码MD5加密
          */
         user=this.ShiroMd5(user);
+        /**
+         * 添加时间
+         */
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
 

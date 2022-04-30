@@ -19,6 +19,10 @@
         delete from goodssystem.session where id=#{id};
     </delete>
 
+    <delete id="deleteSessionByUserId" parameterType="integer">
+        delete from goodssystem.session where user_Id=#{userId};
+    </delete>
+
     <update id="updateSession" parameterType="com.hwx.goodsSystem.entity.session" >
         update goodssystem.session set  update_Time=#{updateTime}  where id=#{id} ;
     </update>

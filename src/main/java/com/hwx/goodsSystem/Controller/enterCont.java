@@ -7,8 +7,8 @@ import com.hwx.goodsSystem.service.roleService;
 import com.hwx.goodsSystem.service.sessionService;
 import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
-import com.hwx.goodsSystem.util.commonResult;
 import com.hwx.goodsSystem.util.goodsJWT;
+import com.hwx.goodsSystem.util.goodsThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -26,6 +26,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/login")
 public class enterCont {
+    @Autowired
+    private goodsThreadLocal goodsThreadLocal;
 
     @Autowired
     private roleService roleService;
@@ -42,12 +44,44 @@ public class enterCont {
     @Autowired
     private goodsJWT goodsJWT;
 
+    /**
+     * 首页
+     * @param map
+     * @return
+     */
     @GetMapping("")
     public String login(Map<String,String> map){
-        map.put("name","");
-        return "login";
+        user user=new user();
+        user=goodsThreadLocal.getUser();
+        if(user!=null){
+            return "redirect:/";
+        }else {
+            return "login";
+        }
     }
 
+    /**
+     * 退出登录
+     */
+    @RequestMapping("/loginOut")
+    public String loginOut(){
+        user user=new user();
+        user=goodsThreadLocal.getUser();
+        if(user!=null){
+           sessionService.deleteSessionByUserId(user.getId());
+        }
+        goodsThreadLocal.setUser(null);
+        return "redirect:/";
+    }
+    /**
+     * 登录
+     * @param name
+     * @param password
+     * @param HttpSession
+     * @param map
+     * @return
+     * @throws RuntimeException
+     */
     @PostMapping("/enter")
     public String enter(@RequestParam("name")String name,
                                       @RequestParam("password")String password,
@@ -108,6 +142,11 @@ public class enterCont {
     }
 
 
+    /**
+     * 登录时查询用户是否已注册(ajax)
+     * @param name
+     * @return
+     */
     @ResponseBody
     @GetMapping("/Proven")
     public String loginProven(String name){
@@ -117,6 +156,15 @@ public class enterCont {
             return  name;
         }
     }
+
+    /**
+     * 注册
+     * @param name
+     * @param password
+     * @param passwordTwo
+     * @param map
+     * @return
+     */
     @PostMapping("/enroll")
     public String enroll(@RequestParam(value = "name")String name,
                                        @RequestParam(value = "password")String password,

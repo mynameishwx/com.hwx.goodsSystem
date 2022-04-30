@@ -3,8 +3,6 @@ package com.hwx.goodsSystem.service;
 
 import com.hwx.goodsSystem.entity.user;
 
-import java.util.List;
-
 public interface userService {
     /**
      * 增
@@ -30,4 +28,5 @@ public interface userService {
      * 根据昵称查询
      */
     user getUser(String userNme);
+
 }
