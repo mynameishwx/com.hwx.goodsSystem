@@ -29,6 +29,11 @@ public class sessionimpl implements sessionService {
     }
 
     @Override
+    public Integer deleteSessionByUserId(Integer id) {
+        return sessionDao.deleteSessionByUserId(id);
+    }
+
+    @Override
     public Integer updateSession(session session) {
         session.setUpdateTime(new Date());
         return sessionDao.updateSession(session);
@@ -50,6 +55,8 @@ public class sessionimpl implements sessionService {
     public session getSessionBySession(String session) {
         List<session> sessions=new ArrayList<>();
         sessions= sessionDao.getSessionBySession(session);
-        return sessions.get(0);
+        if(sessions.size()!=0){
+            return sessions.get(0);
+        }else return null;
     }
 }

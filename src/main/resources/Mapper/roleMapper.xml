@@ -19,7 +19,8 @@
     </delete>
 
     <update id="updateRole" parameterType="com.hwx.goodsSystem.entity.role" keyProperty="id">
-        update goodsSystem.role set role_Name=#{roleName};
+        update goodsSystem.role set role_Name=#{roleName} and update_Time=#{updateTime} where
+        id=#{id};
     </update>
 
 

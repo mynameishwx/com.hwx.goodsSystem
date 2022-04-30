@@ -20,7 +20,8 @@
     </delete>
 
     <update id="updateUserRole" useGeneratedKeys="true" parameterType="com.hwx.goodsSystem.entity.userRole">
-        update  goodsSystem.user_role set  role_Id=#{roleId};
+        update  goodsSystem.user_role set  role_Id=#{roleId} and update_Time=#{updateTime}
+        where id=#{id};
     </update>
 
     <select id="getUserRole" resultMap="userRole" parameterType="integer" >
@@ -31,5 +32,28 @@
     <select id="getUserRoleByUserId" resultMap="userRole" parameterType="integer" >
         select id, user_Id, role_Id, create_Time, update_Time  from goodsSystem.user_role
         where user_Id=#{userId};
+    </select>
+
+    <select id="getPowerByUserId" resultType="com.hwx.goodsSystem.entity.power" parameterType="integer">
+        select P.id,P.url,P.create_Time,P.update_Time from
+            goodssystem.power P
+                join
+            (
+                select RP.power_Id as id from
+                    goodssystem.role_power	RP
+                        join
+                    (
+                        select R.id as id from
+                            goodssystem.role R
+                                join
+                            goodssystem.user_role UR
+                            on
+                                UR.user_Id=#{id} and UR.role_Id=R.id
+                    )URR
+                    on
+                        URR.id=RP.role_Id
+            ) URRP
+            on
+                URRP.id=P.id
     </select>
 </mapper>

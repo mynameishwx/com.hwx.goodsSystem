@@ -1,7 +1,10 @@
 package com.hwx.goodsSystem.service;
 
 
+import com.hwx.goodsSystem.entity.power;
 import com.hwx.goodsSystem.entity.userRole;
+
+import java.util.List;
 
 public interface userRoleService {
     /**
@@ -30,7 +33,7 @@ public interface userRoleService {
     userRole getUserRoleByUserId(Integer id);
 
     /**
-     * 根据用户id查找用户角色
+     * 根据用户id查询他的权限
      */
-
+    List<power> getPowerByUserId(Integer id);
 }

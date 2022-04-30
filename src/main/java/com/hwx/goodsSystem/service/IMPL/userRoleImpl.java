@@ -2,6 +2,7 @@ package com.hwx.goodsSystem.service.IMPL;
 
 
 import com.hwx.goodsSystem.Dao.userRoleDao;
+import com.hwx.goodsSystem.entity.power;
 import com.hwx.goodsSystem.entity.userRole;
 import com.hwx.goodsSystem.service.userRoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,5 +50,10 @@ public class userRoleImpl implements userRoleService {
             return  null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public List<power> getPowerByUserId(Integer id) {
+        return userRoleDao.getPowerByUserId(id);
     }
 }

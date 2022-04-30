@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.shopDao">
+
+    <resultMap id="shop" type="com.hwx.goodsSystem.entity.shop">
+        <id column="id" property="id"/>
+        <result column="shop_Name" property="shopName"/>
+        <result column="shop_Class" property="shopClass"/>
+        <result column="shop_Admin" property="shopAdmin"/>
+        <result column="shop_State" property="shopState"/>
+        <result column="shop_Address" property="shopAddress"/>
+        <result column="shop_Concern" property="shopConcern"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+    <insert id="createShop" parameterType="com.hwx.goodsSystem.entity.shop" keyProperty="id" useGeneratedKeys="true">
+        insert into goodssystem.shop( shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time)
+         VALUES(#{shopName},#{shopClass},#{shop_Admin},#{shopAddress},#{shopConcern},#{createTime},#{updateTime});
+    </insert>
+
+    <delete id="deleteShop" parameterType="integer" >
+        delete from goodssystem.shop where id=#{id};
+    </delete>
+
+    <update id="updateShop" parameterType="com.hwx.goodsSystem.entity.shop" useGeneratedKeys="true" keyProperty="id">
+        update  goodssystem.shop set
+             <if test="shopConcern!=''">shop_Concern=#{shopConcern} and</if>
+             <if test="shopState!=''">shop_State=#{shopState}  and</if>
+             <if test="shopName!=''">shop_Name=#{shopName} and</if>
+             <if test="shopClass!='''">shop_Class=#{shopClass} and</if>
+             <if test="shop_Address!=''">shop_Address=#{shop_Address} and</if>
+             update_Time=#{updateTime} where
+             id=#{id};
+    </update>
+
+    <select id="getShopById" resultMap="shop" parameterType="integer" >
+        select id, shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time
+        from goodssystem.shop where id=#{id}
+    </select>
+
+    <select id="getShopByAdminId" resultMap="shop" parameterType="integer">
+        select id, shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time
+        from goodssystem.shop where shop_Admin=#{shopAdmin}
+    </select>
+</mapper>

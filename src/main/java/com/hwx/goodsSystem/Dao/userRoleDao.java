@@ -1,5 +1,6 @@
 package com.hwx.goodsSystem.Dao;
 
+import com.hwx.goodsSystem.entity.power;
 import com.hwx.goodsSystem.entity.userRole;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -31,4 +32,9 @@ public interface userRoleDao {
      * 根据用户id查询
      */
     List<userRole>  getUserRoleByUserId(Integer id);
+
+    /**
+     * 根据用户id查询他的权限
+     */
+    List<power> getPowerByUserId(Integer id);
 }
