@@ -14,32 +14,32 @@
         <result column="update_Time" property="updateTime"/>
     </resultMap>
     <insert id="createShop" parameterType="com.hwx.goodsSystem.entity.shop" keyProperty="id" useGeneratedKeys="true">
-        insert into goodssystem.shop( shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time)
-         VALUES(#{shopName},#{shopClass},#{shop_Admin},#{shopAddress},#{shopConcern},#{createTime},#{updateTime});
+        insert into goodsSystem.shop(shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time)
+         VALUES(#{shopName},#{shopClass},#{shopAdmin},#{shopState},#{shopAddress},#{shopConcern},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteShop" parameterType="integer" >
-        delete from goodssystem.shop where id=#{id};
+        delete from goodsSystem.shop where id=#{id};
     </delete>
 
     <update id="updateShop" parameterType="com.hwx.goodsSystem.entity.shop" useGeneratedKeys="true" keyProperty="id">
-        update  goodssystem.shop set
-             <if test="shopConcern!=''">shop_Concern=#{shopConcern} and</if>
-             <if test="shopState!=''">shop_State=#{shopState}  and</if>
-             <if test="shopName!=''">shop_Name=#{shopName} and</if>
-             <if test="shopClass!='''">shop_Class=#{shopClass} and</if>
-             <if test="shop_Address!=''">shop_Address=#{shop_Address} and</if>
+        update  goodsSystem.shop set
+             <if test="shopConcern!=''">shop_Concern=#{shopConcern} ,</if>
+             <if test="shopState!=''">shop_State=#{shopState}  ,</if>
+             <if test="shopName!=''">shop_Name=#{shopName} ,</if>
+             <if test="shopClass!='''">shop_Class=#{shopClass} ,</if>
+             <if test="shopAddress!=''">shop_Address=#{shop_Address} ,</if>
              update_Time=#{updateTime} where
              id=#{id};
     </update>
 
     <select id="getShopById" resultMap="shop" parameterType="integer" >
         select id, shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time
-        from goodssystem.shop where id=#{id}
+        from goodsSystem.shop where id=#{id}
     </select>
 
     <select id="getShopByAdminId" resultMap="shop" parameterType="integer">
         select id, shop_Name, shop_Class, shop_Admin, shop_State, shop_Address, shop_Concern, create_Time, update_Time
-        from goodssystem.shop where shop_Admin=#{shopAdmin}
+        from goodsSystem.shop where shop_Admin=#{shopAdmin}
     </select>
 </mapper>

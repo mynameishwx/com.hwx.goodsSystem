@@ -38,17 +38,22 @@ ssl	ssl拦截器。通过https协议才能通过
 user	用户拦截器。eg：登录后（authc），第二次没登陆但是有记住我(remmbner)都可以访问
  */
      /**
-      * 商品界面需要登录
+      * 商品界面
       */
      String.put("/goods/**","authc");
      /**
-      * 设置界面需要登录
+      * 设置界面
       */
      String.put("/setting/**","authc");
      /**
-      * 商品管理需要登录
+      * 商铺管理
       */
      String.put("/shop/**","authc");
+     /**
+      * 设置管理
+      */
+     String.put("/setting/**","authc");
+
      ShiroFilterFactoryBean.setLoginUrl("/login");
      ShiroFilterFactoryBean.setFilterChainDefinitionMap(String);
      return ShiroFilterFactoryBean;

@@ -11,35 +11,35 @@
     </resultMap>
 
     <insert id="createSession" parameterType="com.hwx.goodsSystem.entity.session" keyProperty="id" useGeneratedKeys="true">
-        insert into  goodssystem.session( user_Id, session, create_Time, update_Time) VALUES
+        insert into  goodsSystem.session( user_Id, session, create_Time, update_Time) VALUES
         (#{userId},#{session},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteSessionByid" parameterType="integer" >
-        delete from goodssystem.session where id=#{id};
+        delete from goodsSystem.session where id=#{id};
     </delete>
 
     <delete id="deleteSessionByUserId" parameterType="integer">
-        delete from goodssystem.session where user_Id=#{userId};
+        delete from goodsSystem.session where user_Id=#{userId};
     </delete>
 
     <update id="updateSession" parameterType="com.hwx.goodsSystem.entity.session" >
-        update goodssystem.session set  update_Time=#{updateTime}  where id=#{id} ;
+        update goodsSystem.session set  update_Time=#{updateTime}  where id=#{id} ;
     </update>
 
     <select id="getSessionByid" parameterType="integer" resultMap="session" >
-        select  id, user_Id, session, create_Time, update_Time from goodssystem.session where
+        select  id, user_Id, session, create_Time, update_Time from goodsSystem.session where
         id=#{id};
     </select>
 
 
     <select id="getSessionByUserId" resultMap="session" parameterType="integer" >
-        select  id, user_Id, session, create_Time, update_Time from goodssystem.session where
+        select  id, user_Id, session, create_Time, update_Time from goodsSystem.session where
         user_Id=#{userId};
     </select>
 
     <select id="getSessionBySession" parameterType="string" resultMap="session">
-        select id, user_Id, session, create_Time, update_Time  from goodssystem.session where
+        select id, user_Id, session, create_Time, update_Time  from goodsSystem.session where
             session=#{session};
     </select>
 </mapper>

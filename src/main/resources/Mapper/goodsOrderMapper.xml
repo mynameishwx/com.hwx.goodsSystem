@@ -30,7 +30,7 @@
 
     <update id="updateGoodsOrder" parameterType="com.hwx.goodsSystem.entity.goodsOrder" keyProperty="id" useGeneratedKeys="true">
         update goodsSystem.goods_order set  goods_Payment_state=1
-                                       and update_Time=#{updateTime} where id=#{id};
+                                       , update_Time=#{updateTime} where id=#{id};
     </update>
 
 

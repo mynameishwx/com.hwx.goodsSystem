@@ -19,7 +19,7 @@
     </delete>
 
     <update id="updatePower" parameterType="com.hwx.goodsSystem.entity.power" keyProperty="id">
-        update goodsSystem.power set url=#{url}  and update_Time=#{updateTime} where
+        update goodsSystem.power set url=#{url}  , update_Time=#{updateTime} where
         id=#{id}
     </update>
 

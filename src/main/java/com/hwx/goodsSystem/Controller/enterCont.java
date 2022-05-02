@@ -24,7 +24,6 @@ import java.util.UUID;
 
 @Slf4j
 @Controller
-@RequestMapping("/login")
 public class enterCont {
     @Autowired
     private goodsThreadLocal goodsThreadLocal;
@@ -45,32 +44,77 @@ public class enterCont {
     private goodsJWT goodsJWT;
 
     /**
-     * 首页
-     * @param map
+     * 进入首页
      * @return
      */
     @GetMapping("")
-    public String login(Map<String,String> map){
+    public  String  index_one(){
+        /**
+         * 目的是让其走拦截器，不直接到静态页面
+         */
+        return  "index";
+    }
+    @GetMapping("/")
+    public  String  index_two(){
+        /**
+         * 目的是让其走拦截器，不直接到静态页面
+         */
+        return  "index";
+    }
+    /**
+     * 进入登录页面
+     * @return
+     */
+    @GetMapping("/login")
+    public String login(){
         user user=new user();
         user=goodsThreadLocal.getUser();
         if(user!=null){
+            /**
+             * 已经登录，不进入登录页面
+             */
             return "redirect:/";
-        }else {
+        }else{
+            /**
+             * 未登录，进去登录页面
+             */
             return "login";
+        }
+    }
+
+    /**
+     * 进入注册页面
+     * @return
+     */
+    @GetMapping("/enroll")
+    public String enroll(){
+        user user=new user();
+        user=goodsThreadLocal.getUser();
+        if(user!=null){
+            /**
+             * 已经登录，不进入注册页面
+             */
+            return "redirect:/";
+        }else{
+            /**
+             * 未登录，进去注册页面
+             */
+            return "enroll";
         }
     }
 
     /**
      * 退出登录
      */
-    @RequestMapping("/loginOut")
-    public String loginOut(){
+    @RequestMapping("/login/loginOut")
+    public String loginOut(HttpSession HttpSession){
         user user=new user();
         user=goodsThreadLocal.getUser();
         if(user!=null){
+           HttpSession.removeAttribute("session");
            sessionService.deleteSessionByUserId(user.getId());
         }
-        goodsThreadLocal.setUser(null);
+        goodsThreadLocal.delete();
         return "redirect:/";
     }
     /**
@@ -82,7 +126,7 @@ public class enterCont {
      * @return
      * @throws RuntimeException
      */
-    @PostMapping("/enter")
+    @PostMapping("/login/enter")
     public String enter(@RequestParam("name")String name,
                                       @RequestParam("password")String password,
                                       HttpSession HttpSession,
@@ -126,18 +170,7 @@ public class enterCont {
          *  判断返回普通页面还是管理员界面
          */
         userRole userRolle=userRoleService.getUserRoleByUserId(user.getId());
-        /**
-         * 查询role名称
-         */
-        String roleType=roleService.getRoleById(userRolle.getRoleId()).getRoleName();
         log.info("成功登录");
-        /**
-         * 将关键信息置空返回
-         */
-        user.setPetName(null);
-        user.setSalt(null);
-        user.setUpdateTime(null);
-        user.setCreateTime(null);
         return  "redirect:/";
     }
 
@@ -148,7 +181,7 @@ public class enterCont {
      * @return
      */
     @ResponseBody
-    @GetMapping("/Proven")
+    @GetMapping("/login/Proven")
     public String loginProven(String name){
         if(userService.getUser(name)!=null){
             return  null;
@@ -165,7 +198,7 @@ public class enterCont {
      * @param map
      * @return
      */
-    @PostMapping("/enroll")
+    @PostMapping("/login/enroll")
     public String enroll(@RequestParam(value = "name")String name,
                                        @RequestParam(value = "password")String password,
                                        @RequestParam(value = "passwordTwo")String passwordTwo,

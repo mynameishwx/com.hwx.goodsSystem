@@ -1,10 +1,15 @@
 package com.hwx.goodsSystem.service.IMPL;
 
 import com.hwx.goodsSystem.Dao.shopDao;
+import com.hwx.goodsSystem.Dao.userDao;
+import com.hwx.goodsSystem.Dao.userRoleDao;
 import com.hwx.goodsSystem.entity.shop;
+import com.hwx.goodsSystem.entity.userRole;
 import com.hwx.goodsSystem.service.shopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,12 +18,22 @@ import java.util.List;
 public class shopimpl implements shopService {
 
     @Autowired
+    private userRoleDao userRoleDao;
+
+    @Autowired
     private shopDao shopDao;
 
     @Override
-    public Integer createShop(shop shop) {
+    @Transactional
+    public Integer createShop(shop shop, userRole userRole) {
         shop.setCreateTime(new Date());
         shop.setUpdateTime(new Date());
+        /**
+         * 将用户角色改为店铺主
+         */
+        userRole.setRoleId(4);
+        userRole.setUpdateTime(new Date());
+        userRoleDao.updateUserRole(userRole);
         return shopDao.createShop(shop);
     }
 

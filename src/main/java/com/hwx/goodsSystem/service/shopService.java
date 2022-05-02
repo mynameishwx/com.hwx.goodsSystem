@@ -1,6 +1,7 @@
 package com.hwx.goodsSystem.service;
 
 import com.hwx.goodsSystem.entity.shop;
+import com.hwx.goodsSystem.entity.userRole;
 
 public interface shopService {
     /**
@@ -8,7 +9,7 @@ public interface shopService {
      * @param shop
      * @return
      */
-    Integer  createShop(shop shop);
+    Integer  createShop(shop shop, userRole userRole);
 
     /**
      * 根据id删除
