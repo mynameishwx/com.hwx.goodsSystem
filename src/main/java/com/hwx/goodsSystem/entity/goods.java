@@ -3,6 +3,7 @@ package com.hwx.goodsSystem.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,19 +22,30 @@ public class goods implements Serializable {
     private  Integer  id;
 
     /**
+     * 商铺id
+     */
+    @NonNull
+    private Integer shopId;
+    /**
      * 商品名
      */
-    private String name;
+    @NonNull
+    private String goodsName;
 
+    /**
+     * 商品介绍
+     */
+    private String goodsSuggest;
     /**
      * 商品图片地址
      */
-    private  String imageUrl;
+    private  String goodsImageUrl;
 
     /**
      * 商品价格
      */
-    private Integer money;
+    @NonNull
+    private Integer goodsMoney;
 
     /**
      * 商品上架时间

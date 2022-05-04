@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.goodsDao">
+
+    <resultMap id="goods" type="com.hwx.goodsSystem.entity.goods">
+        <id column="id" property="id"/>
+        <result column="goods_Name" property="goodsName"/>
+        <result column="shop_Id" property="shopId"/>
+        <result column="goods_Suggest" property="goodsSuggest"/>
+        <result column="goods_ImageUrl" property="goodsImageUrl"/>
+        <result column="goods_Money" property="goodsMoney"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="createGoods" parameterType="com.hwx.goodsSystem.entity.goods" keyProperty="id" useGeneratedKeys="true">
+        insert into  goodsSystem.goods(goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time) VALUES
+        (#{goodsName},#{shopId},#{goodsSuggest},#{goodsImageUrl},#{goodsMoney},#{createTime},#{updateTime});
+    </insert>
+
+    <delete id="deleteGoods" parameterType="integer">
+        delete from goodsSystem.goods  where id=#{id};
+    </delete>
+
+    <update id="updateGoods" parameterType="com.hwx.goodsSystem.entity.goods" keyProperty="id" useGeneratedKeys="true">
+        update goodsSystem.goods  set  goods_Name=#{goodsName},goods_Money=#{goodsMoney},
+                                      goods_Suggest=#{goodsSuggest},goods_ImageUrl=#{goodsImageUrl},
+                                      update_Time=#{updateTime} where id=#{id};
+    </update>
+
+
+    <select id="getGoodsById" resultMap="goods" parameterType="integer">
+        select id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
+        where id=#{id};
+    </select>
+
+
+    <select id="getGoodsByName" resultMap="goods" parameterType="integer" >
+        select id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
+        where goods_Name=#{goodsName};
+    </select>
+
+    <select id="getGoodsShopId"  resultMap="goods" parameterType="integer" >
+    select id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
+    where shop_Id=#{shopId};
+    </select>
+
+    <select id="getGoodsLiMit" resultMap="goods" parameterType="integer">
+        select  id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
+       where shop_Id=#{shopId}   limit #{start},#{qty};
+    </select>
+</mapper>

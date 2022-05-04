@@ -49,6 +49,7 @@ public class userRoleImpl implements userRoleService {
         if(list.size()==0){
             return  null;
         }
+        log.info("userRole的根据用户id查询角色  查询结果为: 用户id:"+id+"  用户角色:"+list.get(0).toString());
         return list.get(0);
     }
 

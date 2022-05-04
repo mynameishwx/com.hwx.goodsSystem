@@ -65,6 +65,7 @@ public class goodsPand implements HandlerInterceptor {
                      */
                     session session=new session();
                     session=sessionService.getSessionBySession(token);
+                    log.warn("是否将user持有:  "+session.toString());
                     if(session!=null){
                         /**
                          * 将查询到的user装入ThreadLocal
@@ -108,7 +109,7 @@ public class goodsPand implements HandlerInterceptor {
              */
             role role= new role();
 
-            role=roleService.getRoleById(userRoleService.getUserRoleByUserId(goodsThreadLocal.getUser().getId()).getRoleId());
+            role=roleService.getRoleById(userRoleService.getUserRoleByUserId(user.getId()).getRoleId());
             if(role==null){
                 log.warn("查询用户权限为空 , 用户id :"+user.getId());
             }

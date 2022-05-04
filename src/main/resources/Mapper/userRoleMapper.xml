@@ -35,17 +35,17 @@
     </select>
     <select id="getPowerByUserId" resultType="com.hwx.goodsSystem.entity.power" parameterType="integer">
         select P.id,P.url,P.create_Time,P.update_Time from
-            goodsSystem.power P
+            goodsSystem.power  P
                 join
             (
                 select RP.power_Id as id from
-                    goodsSystem.role_power	RP
+                    goodsSystem.role_power	  RP
                         join
                     (
                         select R.id as id from
                             goodsSystem.role R
                                 join
-                            goodsSystem.user_role UR
+                            goodsSystem.user_role   UR
                             on
                                 UR.user_Id=#{id} and UR.role_Id=R.id
                     )URR

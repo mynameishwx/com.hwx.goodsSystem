@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>店铺管理</title>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.js" ></script>
-    <link href="css/goodsIndex.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js" ></script>
+    <link href="/css/goodsIndex.css" rel="stylesheet">
     <!--  ajax封装-->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
 
@@ -70,15 +70,15 @@
     <div style="height: 100px;">
         <div class="col-xs-2">
             <ul class="nav nav-tab vertical-tab" id="vtab" role="tablist">
-                <li class="active" role="presentation">
-                    <a aria-controls="home" data-toggle="tab" href="#tab1"
-                       role="tab">店铺信息</a>
-                </li>
                 <li role="presentation">
                     <a aria-controls="inbox" data-toggle="tab" href="#tab2"
                        role="tab">
                         商品管理
                     </a>
+                </li>
+                <li class="active" role="presentation">
+                    <a aria-controls="home" data-toggle="tab" href="#tab1"
+                       role="tab">店铺信息</a>
                 </li>
                 <li role="presentation">
                     <a aria-controls="outbox" data-toggle="tab" href="#tab3"
@@ -95,29 +95,102 @@
             </ul>
         </div>
         <div class="tab-content vertical-tab-content col-xs-10">
-            <div class="tab-pane active" id="tab1" role="tabpanel">店铺信息</div>
-            <div class="tab-pane" id="tab2" role="tabpanel">
+            <div class="tab-pane active" id="tab2" role="tabpanel">
                 <div>
                     <p class="bg-primary">正在上架的商品</p>
+                    <div>
+                        <div class="shop_grid_c1 shop_fs_inner" >
+                            <div class="grid_c2">
+                                <ul class="clearfix">
+                                    <li class="more2_item hover-on" th:if="${size>0}">
+                                        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList0.goodsImageUrl}}" width="190">
+                                        <a th:text="${goodsList0.goodsName}"></a>
+                                        <a th:text="${goodsList0.goodsMoney}"></a>
+                                    </li>
+                                    <li class="more2_item hover-on" th:if="${size>1}">
+                                        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList1.goodsImageUrl}}" width="190">
+                                        <a th:text="${goodsList1.goodsName}"></a>
+                                        <a th:text="${goodsList1.goodsMoney}"></a>
+                                    </li>
+                                    <li class="more2_item hover-on" th:if="${size>2}">
+                                        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList2.goodsImageUrl}}" width="190">
+                                        <a th:text="${goodsList2.goodsName}"></a>
+                                        <a th:text="${goodsList2.goodsMoney}"></a>
+                                    </li>
+                                    <li class="more2_item hover-on" th:if="${size>3}">
+                                        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList3.goodsImageUrl}}" width="190">
+                                        <a th:text="${goodsList3.goodsName}"></a>
+                                        <a th:text="${goodsList3.goodsMoney}"></a>
+                                    </li>
+                                    <li class="more2_item hover-on" th:if="${size>4}">
+                                        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList4.goodsImageUrl}}" width="190">
+                                        <a th:text="${goodsList4.goodsName}"></a>
+                                        <a th:text="${goodsList4.goodsMoney}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                   <div>
+                       <nav aria-label="Page navigation">
+                           <ul class="pagination">
+                               <li>
+                                   <a aria-label="Previous" th:href="@{'/goods/List?start=-1&temp='+${temp}}">
+                                       <span aria-hidden="true">上一页&laquo;</span>
+                                   </a>
+                               </li>
+                               <li><a th:text="${temp}"></a></li>
+                               <li>
+                                   <a aria-label="Next" th:href="@{'/goods/List?start=1&temp='+${temp}}">
+                                       <span aria-hidden="true">下一页&raquo;</span>
+                                   </a>
+                               </li>
+                               <li>
+                                   <p>一共<a th:text="${goodsSum}"></a>件商品</p>
+                               </li>
+                           </ul>
+                       </nav>
+
+                   </div>
                 </div>
                 <div>
                     <p class="bg-primary">上架新商品</p>
                     <div>
-                        <div class="form-group">
-                            <label for="goodsName">商品名称</label>
-                            <input class="form-control" id="goodsName" name="goodsName"  type="text">
-                        </div>
-                        <div class="form-group">
-                            <label for="goodsPrice">商品价格</label>
-                            <input class="form-control" id="goodsPrice" name="goodsPrice" type="number">
-                        </div>
-                        <div class="form-group">
-                            <label for="goodsImg">上传商品样例</label>
-                            <input id="goodsImg" type="file">
-                            <p class="help-block">上传5MB以下的 JPG, PNG图片</p>
-                        </div>
-                        <button class="btn btn-default" onclick="goodsCreate()" type="submit">上架</button>
+                       <form action="/goods/create" enctype="multipart/form-data" method="post">
+                           <div class="form-group">
+                               <label for="goodsName">商品名称</label>
+                               <input class="form-control" id="goodsName" name="goodsName"  type="text">
+                           </div>
+                           <div class="form-group">
+                               <label for="goodsSuggest">商品介绍</label>
+                               <input class="form-control" id="goodsSuggest" name="goodsSuggest"  type="text">
+                           </div>
+                           <div class="form-group">
+                               <label for="goodsPrice">商品价格</label>
+                               <input class="form-control" id="goodsPrice" name="goodsPrice" type="number">
+                           </div>
+                           <div class="form-group">
+                               <label for="goodsImg">上传商品样例</label>
+                               <input id="goodsImg" name="goodsImg" type="file">
+                               <p class="help-block">上传10MB以下的 JPG, PNG图片</p>
+                           </div>
+                           <div>
+                               <label for="disabledInput">店主</label>
+                               <input class="form-control" disabled id="disabledInput" name="shopAdmin" th:placeholder="${shopAdminName}"  type="text">
+                           </div>
+                           <div>
+                               <label for="disabledInput2">操作人</label>
+                               <input class="form-control" disabled id="disabledInput2" th:placeholder="${userLogin.userName}"  type="text">
+                           </div>
+                           <div class="alert alert-danger" role="alert" th:if="${Tshi}!=null"><a th:text="${Tshi}"></a></div>
+                           <button class="btn btn-default"  type="submit">上架</button>
+                       </form>
                     </div>
+                </div>
+            </div>
+            <div class="tab-pane " id="tab1" role="tabpanel">
+                <div>
+                    <img alt="..." class="img-circle" height="100" th:src="@{${shop.shopImgUrl}}" width="100">
                 </div>
             </div>
             <div class="tab-pane" id="tab3" role="tabpanel">数据详情</div>

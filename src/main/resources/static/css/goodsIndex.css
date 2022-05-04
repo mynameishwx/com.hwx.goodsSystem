@@ -1,3 +1,25 @@
+
+.shop_box{
+    width: 190px;
+    height: 266px;
+    border: 2px solid black;
+}
+.shop_img{
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.shop_grid_c1{
+    margin: 0 auto;
+    width: 760px;
+}
+.shop_fs_inner {
+    margin: 0 auto;
+    width: 990px;
+}
+
+
+
 <!--   中间的主要框 -->
 .grid_c1 {
     width: 990px;

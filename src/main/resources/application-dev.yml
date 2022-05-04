@@ -27,5 +27,10 @@ spring:
     connect-timeout: 180000  #连接超过时间
 
 
+#店铺头像存放地址
 shop:
   imgNameUrl:  "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/shopImg/"
+
+#商品头像存放地址
+goods:
+  imgNameUrl:  "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/goodsImg/"

@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 登录，注册，首页
+ */
 @Slf4j
 @Controller
 public class enterCont {

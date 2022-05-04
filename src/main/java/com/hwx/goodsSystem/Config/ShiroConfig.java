@@ -40,11 +40,10 @@ user	用户拦截器。eg：登录后（authc），第二次没登陆但是有�
      /**
       * 商品界面
       */
-     String.put("/goods/**","authc");
-     /**
-      * 设置界面
-      */
-     String.put("/setting/**","authc");
+     String.put("/goods/create","authc");
+     String.put("/goods/List","authc");
+
+     String.put("/static/**","anon");
      /**
       * 商铺管理
       */
@@ -53,6 +52,14 @@ user	用户拦截器。eg：登录后（authc），第二次没登陆但是有�
       * 设置管理
       */
      String.put("/setting/**","authc");
+
+     /**
+      * 放行静态资源
+      */
+     String.put("**/css/**","anon");
+     String.put("**/js/**","anon");
+     String.put("**/img/**","anon");
+     String.put("**/shopImg/**","anon");
 
      ShiroFilterFactoryBean.setLoginUrl("/login");
      ShiroFilterFactoryBean.setFilterChainDefinitionMap(String);
