@@ -65,7 +65,6 @@ public class goodsPand implements HandlerInterceptor {
                      */
                     session session=new session();
                     session=sessionService.getSessionBySession(token);
-                    log.warn("是否将user持有:  "+session.toString());
                     if(session!=null){
                         /**
                          * 将查询到的user装入ThreadLocal
@@ -77,7 +76,6 @@ public class goodsPand implements HandlerInterceptor {
                     /**
                      * 令牌有问题，或者没有查询到session，则将user信息卸掉和将过期的session删除
                      */
-                    log.info("有没有持有user；   "+goodsThreadLocal.getUser());
                     goodsThreadLocal.setUser(null);
                     session session=new session();
                     session=sessionService.getSessionBySession(token);
@@ -113,7 +111,10 @@ public class goodsPand implements HandlerInterceptor {
             if(role==null){
                 log.warn("查询用户权限为空 , 用户id :"+user.getId());
             }
-            modelAndView.addObject("role",role.getRoleName());
+            if(!role.getRoleName().equals("user")){
+                modelAndView.addObject("role","shopAdmin");
+            }
+            log.warn("用户角色为："+role.getRoleName());
             /**
              * 置空
              */

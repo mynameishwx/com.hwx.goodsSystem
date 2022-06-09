@@ -31,7 +31,7 @@
                     <li><a th:href="@{/goods/wishGoods}">购物车</a></li>
                     <li th:if="${role}=='shopAdmin'  and ${role}!='user'"><a th:href="@{/shop}">我的店铺</a></li>
                     <li th:if="${role}=='goodsAdmin' and ${role}!='user'"><a th:href="@{/shop}">店铺管理</a></li>
-                    <li th:if="${userLogin}!=null"><a href="https://github.com/mynameishwx/com.hwx.goodsSystem">开发日志</a></li>
+
                 </ul>
                 <form class="navbar-form navbar-left">
                     <div class="form-group">

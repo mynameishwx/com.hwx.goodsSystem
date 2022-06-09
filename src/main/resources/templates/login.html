@@ -30,7 +30,9 @@
             },
             success: function (data){
                 if(data!=""){
+
                    let  div=document.getElementById("Tshi");
+                   div.innerHTML="";
                    div.innerHTML+="<span  className='help-block' id='helpBlock2' "+
         " th:text='${Tshi}'>账号未注册,去注册账号</span>"
 

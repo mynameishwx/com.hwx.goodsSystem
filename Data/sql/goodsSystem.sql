@@ -59,7 +59,7 @@ create table  role (
 );
 create  table  power (
                          id int primary key  auto_increment,
-                         url varchar(20) not null,
+                         url varchar(50) not null,
                          create_Time datetime,
                          update_Time datetime
 );
@@ -93,7 +93,29 @@ create table goods(
 
                       update_Time DATETIME
 );
-
+create table message(
+                        id int primary key auto_increment,
+                        write_Id int not null,
+                        read_Id int not null,
+                        message_Class int not null, #信息类型 0为文本，1为图片
+                        message_power int not null,   #权限
+                        message_state int default 0,  #0 未读 ,1 已读
+                        write_Read varchar(50) not null,
+                        message varchar(200) not null,
+                        create_Time datetime,
+                        update_Time datetime
+);
+create table  staff(
+                       id int primary key auto_increment,
+                       user_Id int not null,
+                       shop_Id int not null,
+                       role_Id int not null,
+                       staff_State int default 0, #0为未确认
+                       money int , #工资
+                       out_Time datetime,  #到期时间
+                       create_Time datetime,
+                       update_Time datetime
+)
 
 # role
 INSERT INTO `role` VALUES (1, 'user', '2022-04-17 09:07:24', '2022-04-17 09:07:24');

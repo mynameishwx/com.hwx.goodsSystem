@@ -3,6 +3,7 @@ package com.hwx.goodsSystem.Dao;
 import com.hwx.goodsSystem.entity.goods;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ public interface goodsDao {
     /**
      * 增
      */
+
     Integer  createGoods(goods goods);
 
     /**
@@ -22,7 +24,7 @@ public interface goodsDao {
     /**
      * 改
      */
-    goods updateGoods(goods goods);
+    Integer updateGoods(goods goods);
 
     /**
      * 查
@@ -49,4 +51,7 @@ public interface goodsDao {
     List<goods> getGoodsLiMit(@Param("start") Integer start,
                               @Param("qty") Integer qty,
                               @Param("shopId")Integer shopId);
+
+    @Select(" select  count(*) from  goodsSystem.goods ")
+    Integer getGoods();
 }

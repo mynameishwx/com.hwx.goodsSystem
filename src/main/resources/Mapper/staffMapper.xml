@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.staffDao">
+
+    <resultMap id="staff" type="com.hwx.goodsSystem.entity.staff">
+        <id column="id" property="id"/>
+        <result column="user_Id" property="userId"/>
+        <result column="shop_Id" property="shopId"/>
+        <result column="role_Id" property="roleId"/>
+        <result column="staff_State" property="staffState"/>
+        <result column="money" property="money"/>
+        <result column="out_Time" property="outTime"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="createStaff" parameterType="com.hwx.goodsSystem.entity.staff" useGeneratedKeys="true" keyProperty="id">
+        insert into goodsSystem.staff( user_Id, shop_Id, role_Id, staff_State, money, out_Time, create_Time, update_Time) VALUES
+     (#{userId},#{shopId},#{roleId},#{staffState},#{money},#{outTime},#{createTime},#{updateTime});
+    </insert>
+
+    <delete id="deleteStaffById" parameterType="integer" >
+        delete from goodsSystem.staff where id=#{id};
+    </delete>
+
+    <delete id="deleteStaffByState" parameterType="integer">
+        delete from goodsSystem.staff where staff_State=0;
+    </delete>
+
+    <update id="updateStaff" parameterType="com.hwx.goodsSystem.entity.staff" keyProperty="id" useGeneratedKeys="true">
+        update goodsSystem.staff set staff_State=#{staffState} ,money=#{money} ,
+                                     shop_Id=#{shopId},out_Time=#{outTime}, update_Time=#{updateTime}
+               where id=#{id};
+    </update>
+    <update id="updateStaffByUserId" parameterType="com.hwx.goodsSystem.entity.staff" keyProperty="id" useGeneratedKeys="true">
+        update goodsSystem.staff set staff_State=1 , update_Time=#{updateTime}
+        where user_Id=#{userId} and  shop_Id=#{shopId};
+    </update>
+
+    <select id="getStaffById" resultMap="staff" parameterType="integer" >
+        select id,  user_Id, shop_Id, role_Id, staff_State, money, out_Time, create_Time, update_Time from goodsSystem.staff
+     where id=#{id};
+    </select>
+
+    <select id="getStaffByShopId" resultMap="staff" parameterType="integer" >
+        select id,  user_Id, shop_Id, role_Id, staff_State, money, out_Time, create_Time, update_Time from goodsSystem.staff
+        where shop_Id=#{shopId};
+    </select>
+
+    <select id="getStaffByUserId" resultMap="staff" parameterType="com.hwx.goodsSystem.entity.staff">
+        select id,  user_Id, shop_Id, role_Id, staff_State, money, out_Time, create_Time, update_Time from goodsSystem.staff
+        where user_Id=#{userId} and staff_State=#{staffState};
+    </select>
+
+</mapper>

@@ -1,8 +1,9 @@
 package com.hwx.goodsSystem.Controller;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.log.Log;
-import com.hwx.goodsSystem.entity.*;
+import com.hwx.goodsSystem.entity.goods;
+import com.hwx.goodsSystem.entity.shop;
+import com.hwx.goodsSystem.entity.user;
 import com.hwx.goodsSystem.service.IMPL.shopGoodsIMPL;
 import com.hwx.goodsSystem.service.goodsService;
 import com.hwx.goodsSystem.service.roleService;
@@ -15,16 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/goods")
@@ -50,12 +52,6 @@ public class goodsCont {
     @Autowired
     private goodsThreadLocal goodsThreadLocal;
 
-    @Autowired
-    private userRoleService userRoleService;
-
-    @Autowired
-    private roleService roleService;
-
 
     @Autowired
     private shopService shopService;
@@ -66,7 +62,7 @@ public class goodsCont {
     /**
      * 创建商品
      */
-    @RequiresPermissions("admin:shop:goods")
+    @RequiresPermissions("admin:shop:goodsCreate")
     @RequestMapping("/create")
     public String createGoods(@RequestParam("goodsName") String goodsName,
                               @RequestParam("goodsPrice")Integer goodsMoney,
@@ -109,7 +105,7 @@ public class goodsCont {
          */
         File File=new File(goodsImgUrl+UUid+"."+imgType[1]);
         if(File.exists()){
-            if(FileUtil.getType(File).equals("jpg") || FileUtil.getType(File).equals("png")){
+            if(FileUtil.getType(File).equals("jpg") || FileUtil.getType(File).equals("png") || FileUtil.getType(File).equals("jpeg")){
 
             }else {
                 File.delete();
@@ -133,7 +129,12 @@ public class goodsCont {
         goods.setGoodsImageUrl(UUid+"."+imgType[1]);  //商品图片Url
         shopGoodsIMPL.createGoods(goods);
         map=shopGoodsIMPL.shopDao(map);
-        return  "shop";
+
+
+        /**
+         * 记录:  未重定向，刷新之后直接添加一个商品
+         */
+        return  "redirect:/shop";
 
 
     }
@@ -152,14 +153,12 @@ public class goodsCont {
             ,@RequestParam("temp")Integer temp,
                                Map<String,Object> map){
         List<goods> goods=new ArrayList<>();
-        /**
-         * 获取当前登录的角色信息
-         */
+        map=shopGoodsIMPL.shopDao(map);
         shop shop=new shop();
         /**
          * 将店铺信息持有
          */
-        shop=shopService.getShopByAdminId(goodsThreadLocal.getUser().getId());
+        shop=shopGoodsIMPL.shop(shop);
         user user=new user();
         user=shopGoodsIMPL.getShopAdminUser();
         map.put("shopAdminName",user.getUserName());

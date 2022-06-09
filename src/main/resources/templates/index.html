@@ -29,8 +29,7 @@
                     <li class="active"><a th:href="@{/}">首页 <span class="sr-only">(current)</span></a></li>
                     <li><a th:href="@{/goods/showGoods}">我的订单</a></li>
                     <li><a th:href="@{/goods/wishGoods}">购物车</a></li>
-                    <li th:if="${role}=='shopAdmin'  and ${role}!='user'"><a th:href="@{/shop}">我的店铺</a></li>
-                    <li th:if="${role}=='goodsAdmin' and ${role}!='user'"><a th:href="@{/shop}">店铺管理</a></li>
+                    <li th:if="${role}=='shopAdmin'"><a th:href="@{/shop}">店铺管理</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
@@ -41,7 +40,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li th:if="${userLogin}==null"><a th:href="@{/login}">登录</a></li>
                     <li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
-                    <li class="dropdown" th:if="${userLogin}!=null"  >
+                    <li th:if="${userLogin}!=null"><a th:href="@{/crony}">我的好友<span class="badge">[[${sum_message}]]</span></a></li>
+                    <li class="dropdown" th:if="${userLogin}!=null">
                         <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" onclick="xia()" role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>

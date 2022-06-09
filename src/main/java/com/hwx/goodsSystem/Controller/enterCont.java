@@ -3,7 +3,8 @@ package com.hwx.goodsSystem.Controller;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.entity.user;
 import com.hwx.goodsSystem.entity.userRole;
-import com.hwx.goodsSystem.service.roleService;
+import com.hwx.goodsSystem.service.IMPL.messageGoodsIMPL;
+import com.hwx.goodsSystem.service.goodsService;
 import com.hwx.goodsSystem.service.sessionService;
 import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
@@ -16,7 +17,6 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class enterCont {
     private goodsThreadLocal goodsThreadLocal;
 
     @Autowired
-    private roleService roleService;
+    private goodsService goodsService;
 
     @Autowired
     private userService userService;
@@ -46,6 +46,9 @@ public class enterCont {
     @Autowired
     private goodsJWT goodsJWT;
 
+    @Autowired
+    private messageGoodsIMPL messageGoodsIMPL;
+
     /**
      * 进入首页
      * @return
@@ -58,10 +61,18 @@ public class enterCont {
         return  "index";
     }
     @GetMapping("/")
-    public  String  index_two(){
+    public  String  index_two(Map<String,Object> map){
+
+        /**
+         * 信息
+         */
+        map=messageGoodsIMPL.messageDao(map);
         /**
          * 目的是让其走拦截器，不直接到静态页面
          */
+
+//        goodsService.getGoodsLiMit();
+
         return  "index";
     }
     /**
@@ -205,7 +216,7 @@ public class enterCont {
     public String enroll(@RequestParam(value = "name")String name,
                                        @RequestParam(value = "password")String password,
                                        @RequestParam(value = "passwordTwo")String passwordTwo,
-                                       Map<String,String> map) {
+                                       Map<String,String> map,HttpSession HttpSession) {
         if (password.equals(passwordTwo)) {
             if (!name.equals("") && !password.equals("")) {
                 user user = new user();
@@ -216,7 +227,10 @@ public class enterCont {
                 map.put("Tshi","参数为空!");
                 return "enroll";
             }
-
+            /**
+             * 登录
+             */
+            this.enter(name,password,HttpSession,map);
             return "redirect:/";
         }else {
             map.put("Tshi","密码不一致!");

@@ -18,7 +18,7 @@ public interface goodsService {
     /**
      * 改
      */
-    goods updateGoods(goods goods);
+    Integer updateGoods(goods goods);
 
     /**
      * 查
@@ -43,4 +43,11 @@ public interface goodsService {
      * @return
      */
     List<goods> getGoodsLiMit(Integer start, Integer qty,Integer shopId);
+
+
+    /**
+     * 获取所有记录数
+     * @return
+     */
+    Integer getGoods();
 }

@@ -47,6 +47,7 @@
 
     <select id="getGoodsLiMit" resultMap="goods" parameterType="integer">
         select  id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
-       where shop_Id=#{shopId}   limit #{start},#{qty};
+        <if test="shopId!=''">where shop_Id=#{shopId}</if>
+          limit #{start},#{qty};
     </select>
 </mapper>

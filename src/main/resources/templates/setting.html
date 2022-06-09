@@ -111,6 +111,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li th:if="${userLogin}==null"><a th:href="@{/login}">登录</a></li>
                     <li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
+                    <li th:if="${userLogin}!=null"><a th:href="@{/crony}">我的好友<span class="badge">[[${sum_message}]]</span></a></li>
                     <li class="dropdown active" th:if="${userLogin}!=null">
                         <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" onclick="xia()" role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
                         <ul class="dropdown-menu">

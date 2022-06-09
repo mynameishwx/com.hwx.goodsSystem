@@ -2,6 +2,7 @@ package com.hwx.goodsSystem.service;
 
 import com.hwx.goodsSystem.entity.shop;
 import com.hwx.goodsSystem.entity.userRole;
+import io.swagger.models.auth.In;
 
 public interface shopService {
     /**
@@ -23,7 +24,7 @@ public interface shopService {
      * @param shop
      * @return
      */
-    shop  updateShop(shop shop);
+    Integer updateShop(shop shop);
 
     /**
      * 根据店铺id查找

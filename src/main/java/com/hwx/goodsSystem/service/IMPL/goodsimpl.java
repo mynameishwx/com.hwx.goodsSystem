@@ -28,7 +28,7 @@ public class goodsimpl implements goodsService {
     }
 
     @Override
-    public goods updateGoods(goods goods) {
+    public Integer updateGoods(goods goods) {
         goods.setUpdateTime(new Date());
         return goodsDao.updateGoods(goods);
     }
@@ -51,5 +51,10 @@ public class goodsimpl implements goodsService {
     @Override
     public List<goods> getGoodsLiMit(Integer start, Integer qty,Integer shopId) {
         return goodsDao.getGoodsLiMit(start,qty,shopId);
+    }
+
+    @Override
+    public Integer getGoods() {
+        return goodsDao.getGoods();
     }
 }

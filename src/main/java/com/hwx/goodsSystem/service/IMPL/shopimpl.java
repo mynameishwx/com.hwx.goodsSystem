@@ -43,7 +43,7 @@ public class shopimpl implements shopService {
     }
 
     @Override
-    public shop updateShop(shop shop) {
+    public Integer updateShop(shop shop) {
         shop.setUpdateTime(new Date());
         return shopDao.updateShop(shop);
     }
