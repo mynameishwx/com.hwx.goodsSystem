@@ -12,6 +12,12 @@ create table goods(
 
     goods_Money INT NOT NULL ,
 
+    keyword varchar(50),
+
+    extend_One  varchar(50), # 扩展字段1
+
+    extend_Two  varchar(50), # 扩展字段2
+
     create_Time DATETIME ,
 
     update_Time DATETIME

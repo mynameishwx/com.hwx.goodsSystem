@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,11 +78,13 @@ public class goodsPand implements HandlerInterceptor {
                      * 令牌有问题，或者没有查询到session，则将user信息卸掉和将过期的session删除
                      */
                     goodsThreadLocal.setUser(null);
+
                     session session=new session();
                     session=sessionService.getSessionBySession(token);
                     if(session!=null){
                         sessionService.deleteSessionByid(session.getId());
                     }
+
                 }
             }
        }

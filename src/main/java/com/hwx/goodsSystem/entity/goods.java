@@ -48,6 +48,21 @@ public class goods implements Serializable {
     private Integer goodsMoney;
 
     /**
+     * 商品关键字
+     */
+    private String  keyword;
+
+    /**
+     * 扩展字段一
+     */
+    private String extend_One;
+
+    /**
+     * 扩展字段二
+     */
+    private String extend_Two;
+
+    /**
      * 商品上架时间
      */
     private Date createTime;

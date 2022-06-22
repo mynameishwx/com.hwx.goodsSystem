@@ -1,22 +1,7 @@
-<ul class="clearfix">
-    <li class="more2_item hover-on" th:if="${goodsList.size()==1}">
-        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList.get(0).goodsImageUrl}}" width="190">
-        <a th:text="${goodsList.get(0).goodsName}"></a>
-        <a th:text="${goodsList.get(0).goodsMoney}"></a>
-    </li>
-    <li class="more2_item hover-on" th:if="${goodsList.size()==2}">
-        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList.get(1).goodsImageUrl}}" width="190">
-        <a th:text="${goodsList.get(1).goodsName}"></a>
-        <a th:text="${goodsList.get(1).goodsMoney}"></a>
-    </li>
-    <li class="more2_item hover-on" th:if="${goodsList.size()==3}">
-        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList.get(2).goodsImageUrl}}" width="190">
-        <a th:text="${goodsList.get(2).goodsName}"></a>
-        <a th:text="${goodsList.get(2).goodsMoney}"></a>
-    </li>
-    <li class="more2_item hover-on" th:if="${goodsList.size()==4}">
-        <img alt="..." height="210"  th:src="@{'/goodsImg/'+${goodsList.get(3).goodsImageUrl}}" width="190">
-        <a th:text="${goodsList.get(3).goodsName}"></a>
-        <a th:text="${goodsList.get(3).goodsMoney}"></a>
-    </li>
-</ul>
+<div class="row">
+    <div class="col-lg-6">
+      <span class="input-group-addon">
+        <input aria-label="..." type="checkbox">
+      </span>
+    </div>
+</div>

@@ -29,13 +29,13 @@
 
     <update id="updateUser" keyProperty="id" useGeneratedKeys="true" >
         update  goodsSystem.user set
-        <if test="petName!=''">pet_Name=#{petName}</if>
-        <if test="petName!='' and imageUrl!=''">,</if>
-        <if test="imageUrl!=''">image_Url=#{imageUrl}</if>
-        <if test="imageUrl!='' and dwell!=''">,</if>
-        <if test="dwell!=''">dwell=#{dwell}</if>
-        <if test="dwell!='' and signature!=''">,</if>
-        <if test="signature!=''">signature=#{signature}</if>
+        <if test="petName!=null">pet_Name=#{petName}</if>
+        <if test="petName!=null and imageUrl!=null">,</if>
+        <if test="imageUrl!=null">image_Url=#{imageUrl}</if>
+        <if test="imageUrl!=null and dwell!=null">,</if>
+        <if test="dwell!=null">dwell=#{dwell}</if>
+        <if test="dwell!=null and signature!=null">,</if>
+        <if test="signature!=null">signature=#{signature}</if>
         update_Time=#{updateTime}  where id=#{id} ;
     </update>
 

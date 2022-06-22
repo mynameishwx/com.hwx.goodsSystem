@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.goodsKeywordDao">
+
+    <resultMap id="goodsKeyword" type="com.hwx.goodsSystem.entity.goodsKeyword">
+        <id column="id" property="id"/>
+        <result column="goods_Id" property="goodsId"/>
+        <result column="superior_Id" property="superiorId"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addGoodsKeyword" parameterType="com.hwx.goodsSystem.entity.goodsKeyword" keyProperty="id" useGeneratedKeys="true" >
+        insert into goodsSystem.goodskeyword(goods_Id, superior_Id, create_Time, update_Time) VALUES
+        (#{goodsId},#{superiorId},#{createTime},#{updateTime});
+    </insert>
+
+    <delete id="deleteGoodsKeywordByid" parameterType="integer" >
+        delete from goodsSystem.goodskeyword where id=#{id};
+    </delete>
+
+    <delete id="deleteGoodsKeyword" parameterType="com.hwx.goodsSystem.entity.goodsKeyword">
+        delete from goodsSystem.goodskeyword <where>
+        <if test="goods_Id!=null">goods_Id=#{goodsId}</if>
+        <if test="superior_Id!=null">, superior_Id=#{superiorId}</if>
+        id=#{id};
+    </where>
+    </delete>
+
+
+    <update id="updateGoodsKeyword" parameterType="com.hwx.goodsSystem.entity.goodsKeyword" useGeneratedKeys="true" keyProperty="id">
+        update goodsSystem.goodskeyword set
+        <if test="goods_Id!=null">goods_Id=#{goodsId}</if>
+        <if test="superior_Id!=null">, superior_Id=#{superiorId}</if>
+        where id=#{id};
+    </update>
+
+    <select id="getGoodsKeywordByGoodsId" resultMap="goodsKeyword" parameterType="integer">
+        select id, goods_Id, superior_Id, create_Time, update_Time from goodsSystem.goodskeyword where
+        goods_Id=#{goodsId};
+    </select>
+
+    <select id="getGoodsKeywordByid"  resultMap="goodsKeyword" parameterType="integer">
+        select id, goods_Id, superior_Id, create_Time, update_Time from goodsSystem.goodskeyword where id=#{id};
+    </select>
+</mapper>

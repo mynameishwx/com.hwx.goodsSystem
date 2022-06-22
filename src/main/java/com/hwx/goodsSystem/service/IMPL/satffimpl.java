@@ -1,11 +1,13 @@
 package com.hwx.goodsSystem.service.IMPL;
 
+import cn.hutool.log.Log;
 import com.hwx.goodsSystem.Dao.staffDao;
 import com.hwx.goodsSystem.entity.*;
 import com.hwx.goodsSystem.service.messageService;
 import com.hwx.goodsSystem.service.staffService;
 import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class satffimpl implements staffService {
 
     @Autowired
@@ -114,12 +117,17 @@ public class satffimpl implements staffService {
 
     @Override
     public staff getStaffByUserId(staff staff) {
-        List<staff> staffList=new ArrayList<>(3);
+        if(staff.getStaffState()==null){
+            log.warn("根据userID查询员工失败: 员工状态为空!");
+            return null;
+        }
+        List<staff> staffList=new ArrayList<>();
         staffList=staffDao.getStaffByUserId(staff);
         if(staffList.size()==0){
             return null;
         }else {
-            return staffList.get(0);
+            staff=staffList.get(0);
+            return staff;
         }
     }
 

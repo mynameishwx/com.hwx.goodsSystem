@@ -44,6 +44,7 @@ user	用户拦截器。eg：登录后（authc），第二次没登陆但是有�
      String.put("/goods/List","authc");
 
      String.put("/static/**","anon");
+
      /**
       * 商铺管理
       */

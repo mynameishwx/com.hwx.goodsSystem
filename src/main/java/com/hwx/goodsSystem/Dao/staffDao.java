@@ -2,7 +2,6 @@ package com.hwx.goodsSystem.Dao;
 
 import com.hwx.goodsSystem.entity.staff;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

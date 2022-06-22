@@ -27,6 +27,10 @@ spring:
     database: 0  #使用那个数据库 (一共16个)
     connect-timeout: 180000  #连接超过时间
 
+#打印执行的SQL语句，测试可开
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #店铺头像存放地址
 shop:
@@ -35,3 +39,6 @@ shop:
 #商品头像存放地址
 goods:
   imgNameUrl:  "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/goodsImg/"
+
+SENSITIVE:
+    text: "操逼"

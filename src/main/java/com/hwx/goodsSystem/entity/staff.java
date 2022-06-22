@@ -47,6 +47,12 @@ public class staff implements Serializable {
      */
     private Date outTime;
 
+
+    /**
+     * 扩展字段
+     */
+    private String extendOne;
+
     private Date createTime;
 
     private Date updateTime;

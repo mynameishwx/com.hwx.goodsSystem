@@ -29,52 +29,7 @@ public class messageGoodsIMPL {
     @Autowired
     private messageService messageService;
 
-    /**
-     * 前端页面(信息部分公共持有)
-     * @param map
-     * @return
-     */
-    public Map<String, Object> messageDao(Map<String, Object> map) {
-        user user=new user();
-        user=goodsThreadLocal.getUser();
-        if (user != null) {
-            /**
-             * 获取该用户所有未读信息
-             */
-            List<message> message = messageService.getMessageNoMy(user.getId());
-            if (message.size() != 0) {
-                map.put("sum_message", message.size());
-                Iterator<message> messageList = message.iterator();
-                message messageT = new message();
-                int my_message = 0;  //普通信息(含店铺招聘)
-                int admin_message = 0; //  系统信息
-                int cronyCreate_message = 0; //好友申请
-                while (messageList.hasNext()) {
-                    messageT = messageList.next();
-                    switch (messageT.getMessageClass()) {
-                        case 0:
-                            ++admin_message;
-                            break;
-                        case 4:
-                            ++cronyCreate_message;
-                            break;
-                        default:
-                            ++my_message;
-                    }
-                }
-                if (my_message != 0) {
-                    map.put("my_message", my_message);
-                }
-                if (admin_message != 0) {
-                    map.put("admin_message", admin_message);
-                }
-                if (cronyCreate_message != 0) {
-                    map.put("cronyCreate_message", cronyCreate_message);
-                }
-            }
-        }
-        return  map;
-    }
+
 
     /**
      * 信息页面专用

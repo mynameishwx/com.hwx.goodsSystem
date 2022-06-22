@@ -56,6 +56,16 @@ public class message implements Serializable {
     private String message;
 
     /**
+     * 扩展字段一
+     */
+    private String extendOne;
+
+    /**
+     * 扩展字段二
+     */
+    private String extendTwo;
+
+    /**
      * 创建时间
      */
     private Date createTime;

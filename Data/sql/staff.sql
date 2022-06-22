@@ -6,6 +6,7 @@ create table  staff(
     staff_State int default 0, #0为未确认
     money int , #工资
     out_Time datetime,  #到期时间
+    extend_One  varchar(50), # 扩展字段
     create_Time datetime,
     update_Time datetime
 )

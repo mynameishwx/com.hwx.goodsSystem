@@ -7,6 +7,7 @@ import com.hwx.goodsSystem.service.*;
 import com.hwx.goodsSystem.service.IMPL.messageGoodsIMPL;
 import com.hwx.goodsSystem.service.IMPL.shopGoodsIMPL;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +57,7 @@ public class shopCont {
     private shopGoodsIMPL shopGoodsIMPL;
 
     @Autowired
-    private messageGoodsIMPL messageGoodsIMPL;
+    private keywordService keywordService;
 
 
 
@@ -68,18 +71,18 @@ public class shopCont {
 
     @GetMapping("/shop")
     public String shop(Map<String,Object> map){
-
         /**
-         * 信息
+         * 权限限定
          */
-        map=messageGoodsIMPL.messageDao(map);
-        /**
-         * 店铺
-         */
-        map=shopGoodsIMPL.shopDao(map);
+        map=shopGoodsIMPL.shop_power(map);
         return "shop";
     }
 
+    /**
+     * 判断是否是店主
+     * @param id
+     * @return
+     */
     @PostMapping("/shop/esse")
     @ResponseBody
     public String  shopEsse(@RequestParam(value = "userId",defaultValue = "")Integer id){
@@ -163,12 +166,17 @@ public class shopCont {
          */
         shop  shop=new shop();
         shop.setShopAdmin(goodsThreadLocal.getUser().getId());
+
+        /**
+         * 根据标签名查询标签ID
+         */
+        int keywordId=keywordService.getKeywordByText(shopClass).getId();
         /**
          * 暂时设置为0，测试
          */
         shop.setShopName(shopName);       //名字
         shop.setShopImgUrl(shopUrl+"."+ImgType[1]);  //头像地址
-        shop.setShopClass(0);     //店铺类型
+        shop.setShopClass(keywordId);     //店铺类型
         shop.setShopAddress("");   //店铺地址
         shop.setShopConcern(0);    //店铺关注
         shop.setShopState(0);     //店铺状态
@@ -178,6 +186,56 @@ public class shopCont {
 
         return "redirect:/";
     }
+
+    /**
+     * 查询商店标签列表
+     * @return
+     */
+    @PostMapping("/shop/getKeyword")
+    @ResponseBody
+    public List<keyword> getKeywordList(){
+        keyword keyword=new keyword();
+        List<keyword> keywordList=new ArrayList<>();
+        List<keyword> one_List=keywordService.getKeyword(null);
+        Iterator<keyword> keywordIterator=one_List.iterator();
+        while (keywordIterator.hasNext()){
+            keyword=keywordIterator.next();
+            if(keyword.getSuperior()==null){
+                keywordList.add(keyword);
+            }
+        }
+        return  keywordList;
+    }
+
+    /**
+     * AJAX商店页面的商店信息获取
+     * @return
+     */
+    @PostMapping("/shop/shopMessage")
+    @ResponseBody
+    public shop shop_shopMessage(){
+        shop shop=new shop();
+        shop= shopService.getShopByAdminId(shopService.getEnterByShop().getShopAdmin());
+        return  shop;
+    }
+
+    /**
+     * 获取店主信息(商品增加模块使用)
+     * @return
+     */
+    @PostMapping("/shop/adminMessage")
+    @ResponseBody
+    public String getShop_createGoods_shopAdmin(){
+        user user=new user();
+        user=userService.getUserById(shopService.getEnterByShop().getShopAdmin());
+        if(user==null){
+            log.warn("获取店主信息为空!!!");
+            return "";
+        }else {
+            return user.getUserName();
+        }
+    }
+
 
     /**
      * 添加新员工
@@ -197,7 +255,6 @@ public class shopCont {
                                @RequestParam("money")Integer money,
                                Map<String,Object>map){
         if(money<=0){
-            map=shopGoodsIMPL.shopDao(map);
             return "添加失败,工资不能小于0";
         }
 
@@ -224,7 +281,6 @@ public class shopCont {
         message.setMessageClass(3);
         List<message> messageList= messageService.getMessageByLogo(message);
         if(messageList.size()!=0){
-            map=shopGoodsIMPL.shopDao(map);
             return "您已经向他发送了招聘信息，请勿重复发送!";
         }
         /**
@@ -245,7 +301,7 @@ public class shopCont {
         /**
          * 存入数据库
          */
-        staff=null;
+        staff=new staff();
         staff.setMoney(money);   //工资
         staff.setShopId(shop.getShopAdmin());  //店铺所有者id
         staff.setUserId(user.getId());  //用户id
@@ -257,10 +313,37 @@ public class shopCont {
                staff.setRoleId(2);
            }
         }
-        map=shopGoodsIMPL.shopDao(map);
         if(staffService.createStaff(staff,shop)==1){
             return "添加成功,待对方同意";
         }else
         return "添加失败!";
+    }
+
+    /**
+     * AJAX展示员工列表
+     * @param start
+     * @param stop
+     * @return
+     */
+    @RequiresPermissions("admin:shop:*")
+    @PostMapping("/shop/staffList")
+    @ResponseBody
+    public List<staff>  showStaff(Integer start, Integer stop){
+          List<staff> staffList=new ArrayList<>();
+          staffList= staffService.getStaffByShopId(goodsThreadLocal.getUser().getId());
+          staff staff=new staff();
+        for (int i = 0; i < staffList.size(); i++) {
+            staff=staffList.get(i);
+            /**
+             * 剔除未确认入职的员工
+             */
+            if(staff.getStaffState()==0){
+                staffList.remove(i);
+                continue;
+            }
+            staff.setExtendOne(userService.getUserById(staff.getUserId()).getUserName());
+            staffList.set(i,staff);
+        }
+          return staffList;
     }
 }

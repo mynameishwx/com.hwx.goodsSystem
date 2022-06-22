@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>设置</title>
+    <link href="/img/favicon.ico" rel="icon">
+    <script src="js/index_message.js" type="text/javascript"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.js" ></script>
     <link href="css/goodsIndex.css" rel="stylesheet">
+    <script src="js/setting.js"></script>
     <!--  ajax封装-->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="js/jquery.cxselect.js"></script>
     <script type="text/javascript">
-        $.cxSelect.defaults.url = 'js/cityData.min.json';
-        $.cxSelect.defaults.emptyStyle = 'none';
-        $('#districtInfo').cxSelect({
-            url: 'js/cityData.min.json',               // 如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
-            selects: ['province', 'city', 'area'],  // 数组，请注意顺序
-            emptyStyle: 'none'
-        });
-
         function shopQuery(){
             let userName=[[${userLogin.id}]];
             if(userName!="") {
@@ -29,52 +23,20 @@
                         userId: userName
                     },
                     success: function (data){
-                          let div=document.getElementById("tab2");
-                          if(data!=""){
+                        let div=document.getElementById("tab2");
+                        if(data!=""){
 
-                          }else {
-                              div.innerHTML="";
-                              div.innerHTML+="<div class=\"jumbotron\">\n" +
-                                  "  <h3>不好意思，你还没有自己的店铺!</h3>\n" +
-                                  "  <p>拥有了店铺可以在其中售卖商品,获取利润......</p>\n" +
-                                  "  <p><a class=\"btn btn-primary btn-lg\" onclick='shop()' role=\"button\">去创建我的店铺</a></p>\n" +
-                                  "</div>";
-                          }
+                        }else {
+                            div.innerHTML="";
+                            div.innerHTML+="<div class=\"jumbotron\">\n" +
+                                "  <h3>不好意思，你还没有自己的店铺!</h3>\n" +
+                                "  <p>快来开启自己的店铺吧,获取利润......</p>\n" +
+                                "  <p><a class=\"btn btn-primary btn-lg\" onclick='shop()' role=\"button\">去创建我的店铺</a></p>\n" +
+                                "</div>";
+                        }
                     }
                 })
             }
-        }
-        function shop(){
-            let div=document.getElementById("tab2");
-            div.innerHTML="";
-            div.innerHTML+="<form action=\"/shop/create\" enctype=\"multipart/form-data\" method=\"post\">\n" +
-                "    <div class=\"form-group\">\n" +
-                "        <label for=\"shopName\">店铺名称</label>\n" +
-                "        <input class=\"form-control\" id=\"shopName\" name=\"shopName\"  type=\"text\" >\n" +
-                "    </div>\n" +
-                "    <div class=\"form-group\">\n" +
-                "        <label for=\"shop_Class\">选择店铺类型</label>\n" +
-                "        <div class=\"col-sm-8 input-group\" id=\"shop_Class\">\n" +
-                "            <select class=\"province form-control\" id=\"one_class\" name=\"province\" style=\"width:90px\">\n" +
-                "                <option>请选择类型</option>\n" +
-                "                <option name=\"1\">休闲食品</option>\n" +
-                "                <option name=\"2\">数码</option>\n" +
-                "                <option name=\"3\">服装</option>\n" +
-                "                <option name=\"4\">生活电器</option>\n" +
-                "                <option name=\"5\">体育用品</option>\n" +
-                "                <option name=\"6\">办公用品</option>\n" +
-                "                <option name=\"7\">其他</option>\n" +
-                "            </select>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "    <div class=\"form-group\">\n" +
-                "        <label for=\"exampleInputFile\">选择店铺形象</label>\n" +
-                "        <input id=\"exampleInputFile\" name=\"shopImg\" type=\"file\">\n" +
-                "        <p class=\"help-block\">请选择小于5MB的jpg,或者png格式的图片</p>\n" +
-                "    </div>\n" +
-                "    <div class=\"alert alert-danger\" role=\"alert\"><a th:text=\"${Tshi}\"></a></div>\n" +
-                "    <button class=\"btn btn-default\" type=\"submit\">提交</button>\n" +
-                "</form>";
         }
     </script>
 </head>
@@ -113,7 +75,7 @@
                     <li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
                     <li th:if="${userLogin}!=null"><a th:href="@{/crony}">我的好友<span class="badge">[[${sum_message}]]</span></a></li>
                     <li class="dropdown active" th:if="${userLogin}!=null">
-                        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" onclick="xia()" role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
+                        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;"  role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>
                             <li><a href="#">我的钱包</a></li>

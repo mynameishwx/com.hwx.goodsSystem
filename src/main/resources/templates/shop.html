@@ -3,17 +3,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>店铺管理</title>
+		<link href="/img/favicon.ico" rel="icon">
 		<link href="/css/bootstrap.css" rel="stylesheet">
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/bootstrap.js"></script>
+		<script src="/js/shop.js"></script>
 		<link href="/css/goodsIndex.css" rel="stylesheet">
 		<!--  ajax封装-->
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-
-
-		<script>
-			import java.util.*;List feeItem =$明细表1.交通工具$; List itemList = new ArrayList(); for(int i=0;i<feeItem.size();i++){ String itemValue = (String)feeItem .get(i); if(itemValue.indexOf("机票")!=-1||itemValue.indexOf("飞机")!=-1||itemValue.indexOf("火车")!=-1itemValue.indexOf("住宿")!=-1itemValue.indexOf("酒店")!=-1){ itemList.add("isTrue"); }else { itemList.add("isFalse"); } }return itemList ;
-		</script>
 		<script>
 			function  goodsEnterOne(){
 				let qname=document.getElementById("staff").value;
@@ -30,7 +26,6 @@
 							div.innerHTML="";
 							div.innerHTML+="<span  className='help-block' id='helpBlock2' "+
 									" th:text='${Tshi}'>未查找到用户</span>"
-
 						}else {
 							let  div=document.getElementById("Tshi");
 							div.innerHTML="";
@@ -97,7 +92,7 @@
 							<li th:if="${userLogin}!=null"><a th:href="@{/crony}">我的好友<span class="badge">[[${sum_message}]]</span></a></li>
 							<li class="dropdown" th:if="${userLogin}!=null">
 								<a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
-									data-toggle="dropdown" href="javascript:;" onclick="xia()"
+									data-toggle="dropdown" href="javascript:;"
 									role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>
@@ -124,13 +119,13 @@
 							</a>
 						</li>
 						<li class="active" role="presentation">
-							<a aria-controls="home" data-toggle="tab" href="#tab1" role="tab">店铺信息</a>
+							<a aria-controls="home" data-toggle="tab" href="#tab1" onclick="shop_shop()" role="tab">店铺信息</a>
 						</li>
 						<li role="presentation" th:if="${dataShow}=='yes'">
 							<a aria-controls="outbox" data-toggle="tab" href="#tab3" role="tab">数据详情</a>
 						</li>
 						<li role="presentation" th:if="${staffCreate}=='yes'" >
-							<a aria-controls="inbox1" data-toggle="tab" href="#tab4" role="tab">人员管理</a>
+							<a aria-controls="inbox1" data-toggle="tab" href="#tab4" onclick="shop_staffList()" role="tab">人员管理</a>
 						</li>
 						<li role="presentation">
 							<a aria-controls="outbox1" data-toggle="tab" href="#tab5" role="tab">客服管理</a>
@@ -144,42 +139,8 @@
 							<div>
 								<div class="shop_grid_c1 shop_fs_inner">
 									<div class="grid_c2">
-										<ul class="clearfix">
-											<li class="more2_item hover-on" th:if="${size>0}">
-												<img alt="..." height="210"
-													th:src="@{'/goodsImg/'+${goodsList0.goodsImageUrl}}" width="190">
-												&emsp;&emsp;&emsp;<a th:text="${goodsList0.goodsName}"></a>
-												<br>
-												&emsp;&emsp;&emsp;&emsp;&emsp;<a class="text-danger" >¥[[${goodsList0.goodsMoney}]]</a>
-											</li>
-											<li class="more2_item hover-on" th:if="${size>1}">
-												<img alt="..." height="210"
-													th:src="@{'/goodsImg/'+${goodsList1.goodsImageUrl}}" width="190">
-												&emsp;&emsp;&emsp;<a th:text="${goodsList1.goodsName}"></a>
-												<br>
-												&emsp;&emsp;&emsp;&emsp;&emsp;<a class="text-danger" >¥[[${goodsList1.goodsMoney}]]</a>
-											</li>
-											<li class="more2_item hover-on" th:if="${size>2}">
-												<img alt="..." height="210"
-													th:src="@{'/goodsImg/'+${goodsList2.goodsImageUrl}}" width="190">
-												&emsp;&emsp;&emsp;<a th:text="${goodsList2.goodsName}"></a>
-												<br>
-												&emsp;&emsp;&emsp;&emsp;&emsp;<a class="text-danger" >¥[[${goodsList2.goodsMoney}]]</a>
-											</li>
-											<li class="more2_item hover-on" th:if="${size>3}">
-												<img alt="..." height="210"
-													th:src="@{'/goodsImg/'+${goodsList3.goodsImageUrl}}" width="190">
-												&emsp;&emsp;&emsp;<a th:text="${goodsList3.goodsName}"></a>
-												<br>
-												&emsp;&emsp;&emsp;&emsp;&emsp;<a class="text-danger">¥[[${goodsList3.goodsMoney}]]</a>
-											</li>
-											<li class="more2_item hover-on" th:if="${size>4}">
-												<img alt="..." height="210"
-													th:src="@{'/goodsImg/'+${goodsList4.goodsImageUrl}}" width="190">
-												&emsp;&emsp;&emsp; <a th:text="${goodsList4.goodsName}"></a>
-												<br>
-												&emsp;&emsp;&emsp;&emsp;&emsp;<a class="text-danger">¥[[${goodsList4.goodsMoney}]]</a>
-											</li>
+										<ul class="clearfix" id="shop_goodsList">
+
 										</ul>
 									</div>
 								</div>
@@ -188,18 +149,23 @@
 								<nav aria-label="Page navigation">
 									<ul class="pagination">
 										<li>
-											<a aria-label="Previous" th:href="@{'/goods/List?start=-1&temp='+${temp}}">
-												<span aria-hidden="true">上一页&laquo;</span>
+											<a aria-label="Next" >
+												<span aria-hidden="true" onclick="getGoodsList(-1)">上一页&raquo;</span>
 											</a>
 										</li>
-										<li><a th:text="${temp}"></a></li>
+										<li><a><div id="shop_goods_list_size">1</div></a></li>
 										<li>
-											<a aria-label="Next" th:href="@{'/goods/List?start=1&temp='+${temp}}">
-												<span aria-hidden="true">下一页&raquo;</span>
+											<a aria-label="Next" >
+												<span aria-hidden="true" onclick="getGoodsList(1)">下一页&raquo;</span>
 											</a>
 										</li>
+<!--										商品总数-->
 										<li>
-											<p>一共<a th:text="${goodsSum}"></a>件商品</p>
+											<button class="btn btn-default" id="shop_goodsSum" type="button"></button>
+										</li>
+										<li>
+											<input class="form-control" id="SearchGoods_text" type="text">
+											<button class="btn btn-default" onclick="SearchGoods()" type="submit">搜索商品</button>
 										</li>
 									</ul>
 								</nav>
@@ -212,11 +178,17 @@
 								<form action="/goods/create" enctype="multipart/form-data" method="post">
 									<div class="form-group">
 										<label for="goodsName">商品名称</label>
-										<input class="form-control" id="goodsName" name="goodsName" type="text">
+										<input class="form-control" id="goodsName" name="goodsName" onblur="getShop_createGoods_shopAdmin()" type="text">
 									</div>
 									<div class="form-group">
 										<label for="goodsSuggest">商品介绍</label>
-										<input class="form-control" id="goodsSuggest" name="goodsSuggest" type="text">
+										<textarea class="form-control" id="goodsSuggest" name="goodsSuggest" rows="3"></textarea>
+									</div>
+									<div class="col-sm-4 input-group">
+										<label for="goods_class">商品标签</label>
+										<select class="province form-control" id="goods_class" onclick="get_Keyword()">
+											<option>请选择类型</option>
+										</select>
 									</div>
 									<div class="form-group">
 										<label for="goodsPrice">商品价格</label>
@@ -227,16 +199,6 @@
 										<input id="goodsImg" name="goodsImg" type="file">
 										<p class="help-block">上传10MB以下的 JPG, PNG图片</p>
 									</div>
-									<div>
-										<label for="disabledInput">店主</label>
-										<input class="form-control" disabled id="disabledInput" name="shopAdmin"
-											th:placeholder="${shopAdminName}" type="text">
-									</div>
-									<div>
-										<label for="disabledInput2">操作人</label>
-										<input class="form-control" disabled id="disabledInput2"
-											th:placeholder="${userLogin.userName}" type="text">
-									</div>
 									<div class="alert alert-danger" role="alert" th:if="${Tshi}!=null"><a
 											th:text="${Tshi}"></a></div>
 									<button class="btn btn-default" type="submit">上架</button>
@@ -245,9 +207,7 @@
 						</div>
 					</div>
 					<div class="tab-pane " id="tab1" role="tabpanel">
-						<div>
-							<img alt="..." class="img-circle" height="100" th:src="@{${shop.shopImgUrl}}" width="100">
-							<h3><a th:text="${shop.shopName}"></a></h3>
+						<div id="shop_shopMessage">
 						</div>
 					</div>
 					<div class="tab-pane" id="tab3" role="tabpanel" th:if="${dataShow}=='yes'">数据详情</div>
@@ -255,21 +215,17 @@
 						<p class="bg-primary">员工管理</p>
 						<div class="alert alert-success" role="alert">我的员工</div>
 						  <table class="table">
-                             <tr>
-                             	<th>员工ID</th>
-								<th>职位</th>
-								<th>薪资</th>
-                             	<th>入职时间</th>
-								<th>操作</th>
-                             </tr>
-                             <tr th:each="staff:${staffList}">
-                             	<td th:each=" name:${nameList}" th:text="${name}"></td>
-                             	<td th:if="${staff.roleId}=='1'">销售</td>
-								<td th:if="${staff.roleId}=='2'">客服</td>
-								<td th:text="${staff.money}"></td>
-								<td th:text="${staff.createTime}"></td>
-								<td>操作</td>
-                             </tr>
+                             <thead>
+							 <tr>
+								 <th>员工ID</th>
+								 <th>职位</th>
+								 <th>薪资</th>
+								 <th>入职时间</th>
+								 <th>操作</th>
+							 </tr>
+							 </thead>
+							  <tbody id="shop_staffList_table">
+							  </tbody>
 						   </table>
 					    <div class="alert alert-success" role="alert">添加新员工</div>
 					     <div class="form-group">

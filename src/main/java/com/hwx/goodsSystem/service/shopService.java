@@ -40,4 +40,10 @@ public interface shopService {
      * @return
      */
     shop getShopByAdminId(Integer id);
+
+    /**
+     * 获取当前登录用户所在的店铺信息
+     * @return
+     */
+    shop getEnterByShop();
 }

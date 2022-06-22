@@ -8,5 +8,4 @@ create table goods_order(
                             goods_Payment_Time datetime,
                             create_Time datetime,
                             update_Time datetime
-
-                        )
+)

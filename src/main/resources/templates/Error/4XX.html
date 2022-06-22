@@ -62,7 +62,11 @@
 </div>
 <div>
     <div class="jumbotron">
-        <h1>找不到资源</h1>
+        <h1>
+            <img height="220" src="img/sorry.jpeg" width="200">
+            <a th:text="${code}"></a>
+            <a th:text="${message}"></a>
+        </h1>
     </div>
 </div>
 </body>

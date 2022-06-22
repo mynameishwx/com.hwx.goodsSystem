@@ -10,13 +10,14 @@
         <result column="staff_State" property="staffState"/>
         <result column="money" property="money"/>
         <result column="out_Time" property="outTime"/>
+        <result column="extend_One" property="extendOne"/>
         <result column="create_Time" property="createTime"/>
         <result column="update_Time" property="updateTime"/>
     </resultMap>
 
     <insert id="createStaff" parameterType="com.hwx.goodsSystem.entity.staff" useGeneratedKeys="true" keyProperty="id">
-        insert into goodsSystem.staff( user_Id, shop_Id, role_Id, staff_State, money, out_Time, create_Time, update_Time) VALUES
-     (#{userId},#{shopId},#{roleId},#{staffState},#{money},#{outTime},#{createTime},#{updateTime});
+        insert into goodsSystem.staff( user_Id, shop_Id, role_Id, staff_State, money, out_Time, extend_One, create_Time, update_Time) VALUES
+     (#{userId},#{shopId},#{roleId},#{staffState},#{money},#{outTime},#{extendOne},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteStaffById" parameterType="integer" >

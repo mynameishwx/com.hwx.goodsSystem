@@ -9,13 +9,15 @@
         <result column="goods_Suggest" property="goodsSuggest"/>
         <result column="goods_ImageUrl" property="goodsImageUrl"/>
         <result column="goods_Money" property="goodsMoney"/>
+        <result column="extend_One" property="extendOne"/>
+        <result column="extend_Two" property="extendTwo"/>
         <result column="create_Time" property="createTime"/>
         <result column="update_Time" property="updateTime"/>
     </resultMap>
 
     <insert id="createGoods" parameterType="com.hwx.goodsSystem.entity.goods" keyProperty="id" useGeneratedKeys="true">
-        insert into  goodsSystem.goods(goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time) VALUES
-        (#{goodsName},#{shopId},#{goodsSuggest},#{goodsImageUrl},#{goodsMoney},#{createTime},#{updateTime});
+        insert into  goodsSystem.goods(goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money,extend_One,extend_Two, create_Time, update_Time) VALUES
+        (#{goodsName},#{shopId},#{goodsSuggest},#{goodsImageUrl},#{goodsMoney},#{extend_One},#{extend_Two},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteGoods" parameterType="integer">
@@ -47,7 +49,7 @@
 
     <select id="getGoodsLiMit" resultMap="goods" parameterType="integer">
         select  id, goods_Name, shop_Id, goods_Suggest, goods_ImageUrl, goods_Money, create_Time, update_Time from goodsSystem.goods
-        <if test="shopId!=''">where shop_Id=#{shopId}</if>
+        <if test="shopId!=null">where shop_Id=#{shopId}</if>
           limit #{start},#{qty};
     </select>
 </mapper>

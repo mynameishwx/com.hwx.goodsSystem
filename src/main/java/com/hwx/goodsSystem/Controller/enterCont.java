@@ -53,26 +53,12 @@ public class enterCont {
      * 进入首页
      * @return
      */
-    @GetMapping("")
-    public  String  index_one(){
-        /**
-         * 目的是让其走拦截器，不直接到静态页面
-         */
-        return  "index";
-    }
     @GetMapping("/")
     public  String  index_two(Map<String,Object> map){
 
         /**
-         * 信息
-         */
-        map=messageGoodsIMPL.messageDao(map);
-        /**
          * 目的是让其走拦截器，不直接到静态页面
          */
-
-//        goodsService.getGoodsLiMit();
-
         return  "index";
     }
     /**
@@ -80,7 +66,7 @@ public class enterCont {
      * @return
      */
     @GetMapping("/login")
-    public String login(){
+    public String login(HttpSession HttpSession){
         user user=new user();
         user=goodsThreadLocal.getUser();
         if(user!=null){

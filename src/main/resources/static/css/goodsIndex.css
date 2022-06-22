@@ -1,4 +1,10 @@
-
+.navbar{
+    background-color: rgba(12, 61, 45, 0.89);
+}
+.navbar.dropdown-menu a:hover{
+    color: #faf2cc;
+    background-color: #faf2cc;
+}
 .shop_box{
     width: 190px;
     height: 266px;

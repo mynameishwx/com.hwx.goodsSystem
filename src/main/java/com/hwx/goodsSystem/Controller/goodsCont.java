@@ -2,22 +2,24 @@ package com.hwx.goodsSystem.Controller;
 
 import cn.hutool.core.io.FileUtil;
 import com.hwx.goodsSystem.entity.goods;
+import com.hwx.goodsSystem.entity.keyword;
 import com.hwx.goodsSystem.entity.shop;
-import com.hwx.goodsSystem.entity.user;
 import com.hwx.goodsSystem.service.IMPL.shopGoodsIMPL;
 import com.hwx.goodsSystem.service.goodsService;
-import com.hwx.goodsSystem.service.roleService;
+import com.hwx.goodsSystem.service.keywordService;
 import com.hwx.goodsSystem.service.shopService;
-import com.hwx.goodsSystem.service.userRoleService;
+import com.hwx.goodsSystem.service.staffService;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -44,17 +46,15 @@ public class goodsCont {
     private String goodsImgUrl;
 
 
-
-
     @Autowired
     private goodsService goodsService;
-
-    @Autowired
-    private goodsThreadLocal goodsThreadLocal;
 
 
     @Autowired
     private shopService shopService;
+
+    @Autowired
+    private keywordService keywordService;
 
     @Autowired
     private shopGoodsIMPL shopGoodsIMPL;
@@ -62,7 +62,7 @@ public class goodsCont {
     /**
      * 创建商品
      */
-    @RequiresPermissions("admin:shop:goodsCreate")
+    @RequiresPermissions("admin:shop:goods")
     @RequestMapping("/create")
     public String createGoods(@RequestParam("goodsName") String goodsName,
                               @RequestParam("goodsPrice")Integer goodsMoney,
@@ -127,84 +127,65 @@ public class goodsCont {
         goods.setGoodsMoney(goodsMoney); //商品价格
         goods.setGoodsSuggest(goodsSuggest); //商品介绍
         goods.setGoodsImageUrl(UUid+"."+imgType[1]);  //商品图片Url
-        shopGoodsIMPL.createGoods(goods);
-        map=shopGoodsIMPL.shopDao(map);
-
+        goods.setShopId(shopService.getEnterByShop().getId());
+        goodsService.createGoods(goods);
 
         /**
          * 记录:  未重定向，刷新之后直接添加一个商品
          */
         return  "redirect:/shop";
-
-
     }
 
     /**
-     * 商品列表
-     * @param start
-     * 前一页还是后一页的信号量(值为-1或者1)
-     * @param temp
-     * 当前所在页数
-     * @param map
+     * 商品搜索
+     * @param Search_Goods_text
+     * 查询的字段
      * @return
      */
-    @GetMapping("/List")
-    public String getGoodsList(@RequestParam(value = "start",defaultValue = "0") Integer start
-            ,@RequestParam("temp")Integer temp,
-                               Map<String,Object> map){
-        List<goods> goods=new ArrayList<>();
-        map=shopGoodsIMPL.shopDao(map);
-        shop shop=new shop();
-        /**
-         * 将店铺信息持有
-         */
-        shop=shopGoodsIMPL.shop(shop);
-        user user=new user();
-        user=shopGoodsIMPL.getShopAdminUser();
-        map.put("shopAdminName",user.getUserName());
-        goods=goodsService.getGoodsShopId(shop.getId());
-        map.put("goodsSum",goods.size());
-        if(goods.size()>5){
-            if(start.equals(-1)){
-                if(!temp.equals(1)){
-                    goods=goodsService.getGoodsLiMit((temp-2)*5,5,shop.getId());
-                    temp=temp-1;
-                }else {
-                    //首页无法前一页
-                }
-            }else if(start.equals(1)){
-                /**
-                 * 判断是否有余数,通过余数来确定页数，有余数则除数加1，否则则为除数
-                 */
-                if(goods.size()%5==0){
-                    if(temp!=goods.size()/5){
-                        goods=goodsService.getGoodsLiMit(temp*5,5,shop.getId());
-                        temp++;
-                    }else {
-                        goods=goodsService.getGoodsLiMit((temp-1)*5,5,shop.getId());
-                    }
-                }else {
-                    if(temp!=(goods.size()/5)+1){
-                        goods=goodsService.getGoodsLiMit(temp*5,5,shop.getId());
-                        temp++;
-                    }else {
-                        goods=goodsService.getGoodsLiMit((temp-1)*5,5,shop.getId());
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < goods.size(); i++) {
-            map.put("goodsList"+i,goods.get(i));
-        }
-        map.put("size",goods.size());
-        map.put("temp",temp);
-        /**
-         * 店铺信息
-         */
-        shop.setShopImgUrl("/shopImg/"+shop.getShopImgUrl());
-        map.put("shop",shop);
+    @PostMapping("/SearchGoods")
+    @RequiresPermissions("admin:shop:goods")
+    @ResponseBody
+    public List<goods> SearchGoods(@RequestParam("Search_Goods_text")String Search_Goods_text){
 
-        return "shop";
+        return null;
+    }
+
+    /**
+     * AJAX获取商品列表
+     * @param start
+     * @param stop
+     * @return
+     */
+    @PostMapping("/showList")
+    @RequiresPermissions("admin:shop:goods")
+    @ResponseBody
+    public List<goods> goodsList(Integer start,Integer stop){
+        List<goods> goodsList=new ArrayList<>();
+        //获取总条数
+        goodsList=goodsService.getGoodsShopId(shopService.getEnterByShop().getId());
+        int x=goodsList.size();
+        goodsList=new ArrayList<>();
+        //获取商品
+        goodsList= goodsService.getGoodsLiMit(start,stop, shopService.getEnterByShop().getId());
+        if(x==0){
+            return null;
+        }else {
+            //将总商品数转递给前端
+            goods  goods=new goods();
+            goods=goodsList.get(0);
+            goods.setExtend_One(x+"");
+
+            //页数
+            int y=0;
+            if(x%5!=0){
+                y=x/5+1;
+            }else {
+                y=x/5;
+            }
+            goods.setExtend_Two(y+"");
+            goodsList.set(0,goods);
+        }
+        return  goodsList;
     }
 
     /**
@@ -215,6 +196,31 @@ public class goodsCont {
     public String showGoods(){
 
         return  "goodsS";
+    }
+
+    /**
+     * 商品类型获取
+     * @return
+     */
+    @RequiresPermissions("admin:shop:goods")
+    @PostMapping("/getKeyword")
+    @ResponseBody
+    public List<keyword> getKeyword(){
+        /**
+         * 获取商店信息
+         */
+        shop shop=new shop();
+        shop=shopGoodsIMPL.shop(shop);
+        /**
+         *  根据上级标签和标签等级模糊查询
+         */
+        keyword keyword=new keyword();
+        keyword.setSuperior(keywordService.getKeywordByText(shop.getShopName()).getSuperior());
+        keyword.setExtend_One("2");
+        List<keyword> keywordList=new ArrayList<>();
+        keywordList=keywordService.getKeyword(keyword);
+        System.out.println(keywordList.get(0).toString());
+        return keywordList;
     }
 
     /**

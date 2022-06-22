@@ -25,12 +25,12 @@
 
     <update id="updateShop" parameterType="com.hwx.goodsSystem.entity.shop" useGeneratedKeys="true" keyProperty="id">
         update  goodsSystem.shop set
-             <if test="shopConcern!=''">shop_Concern=#{shopConcern} ,</if>
-             <if test="shopState!=''">shop_State=#{shopState}  ,</if>
-             <if test="shopName!=''">shop_Name=#{shopName} ,</if>
-             <if test="shopImgUrl!=''">shop_ImgUrl=#{shopImgUrl}</if>
-             <if test="shopClass!='''">shop_Class=#{shopClass} ,</if>
-             <if test="shopAddress!=''">shop_Address=#{shop_Address} ,</if>
+             <if test="shopConcern!=null">shop_Concern=#{shopConcern} ,</if>
+             <if test="shopState!=null">shop_State=#{shopState}  ,</if>
+             <if test="shopName!=null">shop_Name=#{shopName} ,</if>
+             <if test="shopImgUrl!=null">shop_ImgUrl=#{shopImgUrl}</if>
+             <if test="shopClass!=null">shop_Class=#{shopClass} ,</if>
+             <if test="shopAddress!=null">shop_Address=#{shop_Address} ,</if>
              update_Time=#{updateTime} where
              id=#{id};
     </update>
