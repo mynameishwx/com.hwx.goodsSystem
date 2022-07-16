@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.goodsMarkDao">
+
+    <resultMap id="goodsMark" type="com.hwx.goodsSystem.entity.goodsMark">
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="system_number" property="systemNumber"/>
+        <result column="purchase_number" property="purchaseNumber"/>
+        <result column="thumbs_number" property="thumbsNumber"/>
+        <result column="praise_number" property="praiseNumber"/>
+        <result column="negative_number" property="negativeNumber"/>
+        <result column="read_number" property="readNumber"/>
+        <result column="search_number" property="searchNumber"/>
+        <result column="collect_number" property="collectNumber"/>
+        <result column="forward_number" property="forwardNumber"/>
+        <result column="sum_mark" property="sumMark"/>
+        <result column="create_Time" property="create_Time"/>
+        <result column="update_Time" property="update_Time"/>
+    </resultMap>
+
+    <insert id="createGoodsMark" parameterType="com.hwx.goodsSystem.entity.goodsMark" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into goodsSystem.goods_mark(goods_id, system_number, purchase_number, thumbs_number, praise_number,
+                                           negative_number, read_number, search_number, collect_number, forward_number,
+                                           sum_mark, create_Time, update_Time)
+        VALUES (#{goodsId}, #{systemNumber}, #{purchaseNumber}, #{thumbsNumber}, #{praiseNumber}, #{negativeNumber},
+                #{readNumber}, #{searchNumber}, #{collectNumber}, #{forwardNumber}, #{sumMark}, #{create_Time},
+                #{update_Time});
+    </insert>
+
+    <delete id="deleteById" parameterType="integer">
+        delete
+        from goodsSystem.goods_mark
+        where id = #{id};
+    </delete>
+
+    <update id="updateByid" parameterType="com.hwx.goodsSystem.entity.goodsMark" useGeneratedKeys="true"
+            keyProperty="id">
+        update goodsSystem.goods_mark set
+        <if test="systemNumber!=null">system_number=#{systemNumber},</if>
+        <if test="purchaseNumber!=null">purchase_number=#{purchaseNumber},</if>
+        <if test="thumbsNumber!=null">thumbs_number=#{thumbsNumber},</if>
+        <if test="praiseNumber!=null">purchase_number=#{purchaseNumber},</if>
+        <if test="negativeNumber!=null">negative_number=#{negativeNumber},</if>
+        <if test="readNumber!=null">read_number=#{readNumber},</if>
+        <if test="searchNumber!=null">search_number=#{searchNumber},</if>
+        <if test="collectNumber!=null">collect_number=#{collectNumber},</if>
+        update_Time=#{update_Time} where id=#{id}
+    </update>
+
+
+    <select id="selectByid" resultMap="goodsMark" parameterType="com.hwx.goodsSystem.entity.goodsMark">
+        select id,goods_id, system_number, purchase_number, thumbs_number, praise_number, negative_number, read_number,
+        search_number, collect_number, forward_number, sum_mark,create_Time, update_Time from goodsSystem.goods_mark
+        <where>
+            <if test="systemNumber!=null">system_number=#{systemNumber} and</if>
+            <if test="purchaseNumber!=null">purchase_number=#{purchaseNumber} and</if>
+            <if test="thumbsNumber!=null">thumbs_number=#{thumbsNumber} and</if>
+            <if test="praiseNumber!=null">purchase_number=#{purchaseNumber} and</if>
+            <if test="negativeNumber!=null">negative_number=#{negativeNumber} and</if>
+            <if test="readNumber!=null">read_number=#{readNumber} and</if>
+            <if test="searchNumber!=null">search_number=#{searchNumber} and</if>
+            <if test="collectNumber!=null">collect_number=#{collectNumber} and</if>
+            <if test="goodsId!=null">goods_id=#{goodsId} and</if>
+            <if test="id!=null">id=#{id}</if>
+            <if test="id==null">1=1 and goods_id!=0 LIMIT 0, 120</if>
+        </where>
+    </select>
+</mapper>

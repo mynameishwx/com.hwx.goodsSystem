@@ -12,49 +12,28 @@
     <link href="css/goodsIndex.css" rel="stylesheet">
 </head>
 <body>
-<div style="height: 100px;">
-    <div class="col-xs-2">
-        <ul class="nav nav-tab vertical-tab" id="vtab" role="tablist">
-            <li class="active" role="presentation">
-                <a aria-controls="home" data-toggle="tab" href="#tab1"
-                   role="tab">本地</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="inbox" data-toggle="tab" href="#tab2"
-                   role="tab">系统</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="outbox" data-toggle="tab" href="#tab3"
-                   role="tab">网络</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="inbox1" data-toggle="tab" href="#tab4"
-                   role="tab">视音频</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="outbox1" data-toggle="tab" href="#tab5"
-                   role="tab">图像</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="outbox1" data-toggle="tab" href="#tab6"
-                   role="tab">事件</a>
-            </li>
-            <li role="presentation">
-                <a aria-controls="outbox1" data-toggle="tab" href="#tab7"
-                   role="tab">存储</a>
-            </li>
-        </ul>
-    </div>
-    <div class="tab-content vertical-tab-content col-xs-10">
-        <div class="tab-pane active" id="tab1" role="tabpanel">这是.本地..</div>
-        <div class="tab-pane" id="tab2" role="tabpanel">这是.系统..</div>
-        <div class="tab-pane" id="tab3" role="tabpanel">这是..网络.</div>
-        <div class="tab-pane" id="tab4" role="tabpanel">这是.视音频..</div>
-        <div class="tab-pane" id="tab5" role="tabpanel">这是..图像.</div>
-        <div class="tab-pane" id="tab6" role="tabpanel">这是..事件.</div>
-        <div class="tab-pane" id="tab7" role="tabpanel">这是..存储.</div>
-    </div>
-</div>
+<!-- Button trigger modal -->
+<button class="btn btn-primary btn-lg" data-target="#myModal" data-toggle="modal" type="button">
+  Launch demo modal
+</button>
 
+<!-- Modal -->
+<div aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+        <button class="btn btn-primary" type="button">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

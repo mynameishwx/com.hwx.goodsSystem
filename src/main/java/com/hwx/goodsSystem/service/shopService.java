@@ -1,6 +1,8 @@
 package com.hwx.goodsSystem.service;
 
 import com.hwx.goodsSystem.entity.shop;
+import com.hwx.goodsSystem.entity.userRole;
+import io.swagger.models.auth.In;
 
 public interface shopService {
     /**
@@ -8,7 +10,7 @@ public interface shopService {
      * @param shop
      * @return
      */
-    Integer  createShop(shop shop);
+    Integer  createShop(shop shop, userRole userRole);
 
     /**
      * 根据id删除
@@ -22,7 +24,7 @@ public interface shopService {
      * @param shop
      * @return
      */
-    shop  updateShop(shop shop);
+    Integer updateShop(shop shop);
 
     /**
      * 根据店铺id查找
@@ -38,4 +40,10 @@ public interface shopService {
      * @return
      */
     shop getShopByAdminId(Integer id);
+
+    /**
+     * 获取当前登录用户所在的店铺信息
+     * @return
+     */
+    shop getEnterByShop();
 }

@@ -9,25 +9,25 @@
         <result column="update_Time" property="updateTime"/>
     </resultMap>
     <insert id="createRolePower" parameterType="com.hwx.goodsSystem.entity.rolePower"  useGeneratedKeys="true" keyProperty="id">
-        insert into  goodssystem.role_power( role_Id, power_Id, create_Time, update_Time)
+        insert into  goodsSystem.role_power( role_Id, power_Id, create_Time, update_Time)
         values (#{roleId},#{powerId},#{createTime},#{updateTime});
     </insert>
 
     <delete id="deleteRolePower" parameterType="integer" >
-        delete from goodssystem.role_power  where  id=#{id};
+        delete from goodsSystem.role_power  where  id=#{id};
     </delete>
 
     <update id="updateRolePower" parameterType="com.hwx.goodsSystem.entity.rolePower" useGeneratedKeys="true" keyProperty="id">
-        update goodssystem.role_power  set  power_Id=#{powerId} and update_Time=#{updateTime} where id=#{id};
+        update goodsSystem.role_power  set  power_Id=#{powerId} , update_Time=#{updateTime} where id=#{id};
     </update>
 
     <select id="getByid" resultMap="rolePower" parameterType="integer" >
-        select id, role_Id, power_Id, create_Time, update_Time from goodssystem.role_power  where
+        select id, role_Id, power_Id, create_Time, update_Time from goodsSystem.role_power  where
         id=#{id};
     </select>
 
     <select id="getByRoleId" parameterType="integer" resultMap="rolePower" >
-        select  id, role_Id, power_Id, create_Time, update_Time from goodssystem.role_power where
+        select  id, role_Id, power_Id, create_Time, update_Time from goodsSystem.role_power where
         role_Id=#{roleId};
     </select>
 </mapper>

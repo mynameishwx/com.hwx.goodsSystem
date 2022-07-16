@@ -27,7 +27,7 @@ public interface shopDao {
      * @param shop
      * @return
      */
-    shop  updateShop(shop shop);
+    Integer  updateShop(shop shop);
 
     /**
      * 根据店铺id查找

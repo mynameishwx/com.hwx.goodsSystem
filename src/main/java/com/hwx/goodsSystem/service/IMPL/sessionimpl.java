@@ -3,6 +3,7 @@ package com.hwx.goodsSystem.service.IMPL;
 import com.hwx.goodsSystem.Dao.sessionDao;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.service.sessionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class sessionimpl implements sessionService {
 
     @Autowired
@@ -18,6 +20,7 @@ public class sessionimpl implements sessionService {
 
     @Override
     public Integer createSession(session session) {
+        session.setExist(0);
         session.setCreateTime(new Date());
         session.setUpdateTime(new Date());
         return sessionDao.createSession(session);
@@ -45,10 +48,20 @@ public class sessionimpl implements sessionService {
     }
 
     @Override
-    public session getSessionByUserId(Integer id) {
-        List<session> sessions=new ArrayList<>();
-        sessions= sessionDao.getSessionByUserId(id);
-        return sessions.get(0);
+    public List<session> getSession(session session) {
+        return sessionDao.getSession(session);
+    }
+
+    @Override
+    public List<session> getSessionByUserId(Integer id) {
+        List<session> sessions = new ArrayList<>();
+        sessions = sessionDao.getSessionByUserId(id);
+        if (sessions.size() == 0) {
+            log.error("未根据用户ID+" + id + "查找session");
+            return null;
+        } else {
+            return sessions;
+        }
     }
 
     @Override

@@ -3,16 +3,13 @@ package com.hwx.goodsSystem;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 
 @SpringBootTest
 class ApplicationTests {
 
     @Test
-    void contextLoads() {
-
-
+    void contextLoads() throws IOException {
     }
 
 }

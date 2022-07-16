@@ -1,60 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>店铺管理</title>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.js" ></script>
-    <link href="css/goodsIndex.css" rel="stylesheet">
-    <!--  ajax封装-->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-</head>
-<body>
-<nav class="navbar navbar-default" id="parent">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/}">
-                Goods
-            </a>
-            <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>店铺管理</title>
+		<link href="/img/favicon.ico" rel="icon">
+		<link href="/css/bootstrap.css" rel="stylesheet">
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.js"></script>
+		<script src="/js/shop.js"></script>
+		<link href="/css/goodsIndex.css" rel="stylesheet">
+		<script src="js/public.js" type="text/javascript"></script>
+		<!--  查找用户，创建新员工-->
+		<script>
+			function goodsEnterOne() {
+				let qname = document.getElementById("staff").value;
+				$.ajax({
+					url: "/login/Proven",
+					type: "get",
+					data: {
+						name: qname
+					},
+					success: function (data) {
+						if(data!=""){
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li ><a th:href="@{/}">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a th:href="@{/goods/showGoods}">我的订单</a></li>
-                <li><a th:href="@{/goods/wishGoods}">购物车</a></li>
-                <li class="active" th:if="${role}=='shopAdmin'"><a th:href="@{/goods/shop}">我的店铺</a></li>
-                <li th:if="${role}=='goodsAdmin'"><a th:href="@{/goods/goods}">店铺管理</a></li>
-            </ul>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input class="form-control" type="text" >
-                </div>
-                <button class="btn btn-default" type="submit">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li th:if="${userLogin}==null"><a th:href="@{/login}">登录</a></li>
-                <li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
-                <li class="dropdown" th:if="${userLogin}!=null">
-                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" onclick="xia()" role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>
-                        <li><a href="#">我的钱包</a></li>
-                        <li><a href="#">我的信息</a></li>
-                        <li class="divider" role="separator"></li>
-                        <li><a th:href="@{/login/loginOut}">退出登录</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-</body>
+							let  div=document.getElementById("Tshi");
+							div.innerHTML="";
+							div.innerHTML+="<span  className='help-block' id='helpBlock2' "+
+									" th:text='${Tshi}'>未查找到用户</span>"
+						}else {
+							let  div=document.getElementById("Tshi");
+							div.innerHTML="";
+						}
+					}
+				})
+			}
+			function createStaff(){
+				let ff=document.getElementById("staff").value;
+				let tt=document.getElementById("shop_select").value;
+				let mm=document.getElementById("money").value;
+				
+				$.ajax({
+					url: "/shop/createStaff",
+					type: "post",
+					data: {
+						staff: ff,
+				        hat: tt,
+						money: mm
+					},
+					success: function(data){
+						alert(data);
+					}
+				})
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<nav class="navbar navbar-default" id="parent">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" th:href="@{/}">
+							Goods
+						</a>
+						<button aria-expanded="false" class="navbar-toggle collapsed"
+							data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a th:href="@{/}">首页 <span class="sr-only">(current)</span></a></li>
+							<li><a th:href="@{/order/showGoods}">我的订单</a></li>
+							<li><a th:href="@{/goodspool/wishGoods}">购物车</a></li>
+							<li class="active" th:if="${role}=='shopAdmin'  and ${role}!='user'"><a
+									th:href="@{/shop}">我的店铺</a></li>
+							<li class="active" th:if="${role}=='goodsAdmin' and ${role}!='user'"><a
+									th:href="@{/shop}">店铺管理</a></li>
+						</ul>
+						<form class="navbar-form navbar-left">
+							<div class="form-group">
+								<input class="form-control" type="text">
+							</div>
+							<button class="btn btn-default" type="submit">搜索</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<li th:if="${userLogin}==null"><a th:href="@{/login}">登录</a></li>
+							<li th:if="${userLogin}==null"><a th:href="@{/enroll}">注册</a></li>
+							<li th:if="${userLogin}!=null"><a th:href="@{/crony}">我的好友<span class="badge">[[${sum_message}]]</span></a></li>
+							<li class="dropdown" th:if="${userLogin}!=null">
+								<a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
+									data-toggle="dropdown" href="javascript:;"
+									role="button">[[${userLogin.userName}]]<span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a th:href="@{/user/{id}(id=${userLogin.id})}">个人资料</a></li>
+									<li><a href="#">我的钱包</a></li>
+									<li><a href="#">我的信息</a></li>
+									<li class="divider" role="separator"></li>
+									<li><a th:href="@{/setting}">设置</a></li>
+									<li class="divider" role="separator"></li>
+									<li><a th:href="@{/login/loginOut}">退出登录</a></li>
+								</ul>
+							</li> 
+						</ul>
+					</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+			</nav>
+		</div>
+		<div>
+			<div style="height: 100px;">
+				<div class="col-xs-2">
+					<ul class="nav nav-tab vertical-tab" id="vtab" role="tablist">
+						<li role="presentation">
+							<a aria-controls="inbox" data-toggle="tab" href="#tab2" role="tab">
+								商品管理
+							</a>
+						</li>
+						<li class="active" role="presentation">
+							<a aria-controls="home" data-toggle="tab" href="#tab1" onclick="shop_shop()" role="tab">店铺信息</a>
+						</li>
+						<li role="presentation" th:if="${dataShow}=='yes'">
+							<a aria-controls="outbox" data-toggle="tab" href="#tab3" role="tab">数据详情</a>
+						</li>
+						<li role="presentation" th:if="${staffCreate}=='yes'" >
+							<a aria-controls="inbox1" data-toggle="tab" href="#tab4" onclick="shop_staffList()" role="tab">人员管理</a>
+						</li>
+						<li role="presentation">
+							<a aria-controls="outbox1" data-toggle="tab" href="#tab5" role="tab">客服管理</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content vertical-tab-content col-xs-10">
+					<div class="tab-pane active" id="tab2" role="tabpanel">
+						<div>
+							<p class="bg-primary">正在上架的商品</p>
+							<div>
+								<div class="shop_grid_c1 shop_fs_inner">
+									<div class="grid_c2">
+										<ul class="clearfix" id="shop_goodsList">
+
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div>
+								<nav aria-label="Page navigation">
+									<ul class="pagination">
+										<li>
+											<a aria-label="Next" >
+												<span aria-hidden="true" onclick="getGoodsList(-1)">上一页&raquo;</span>
+											</a>
+										</li>
+										<li><a><div id="shop_goods_list_size">1</div></a></li>
+										<li>
+											<a aria-label="Next" >
+												<span aria-hidden="true" onclick="getGoodsList(1)">下一页&raquo;</span>
+											</a>
+										</li>
+<!--										商品总数-->
+										<li>
+											<button class="btn btn-default" id="shop_goodsSum" type="button"></button>
+										</li>
+										<li>
+											<input class="form-control" id="SearchGoods_text" type="text">
+											<button class="btn btn-default" onclick="SearchGoods()" type="submit">搜索商品</button>
+										</li>
+									</ul>
+								</nav>
+
+							</div>
+						</div>
+						<div  th:if="${goodsCreate}=='yes'">
+							<p class="bg-primary">上架新商品</p>
+							<div>
+								<form action="/goods/create" enctype="multipart/form-data" method="post">
+									<div class="form-group">
+										<label for="goodsName">商品名称</label>
+										<input class="form-control" id="goodsName" name="goodsName" onblur="getShop_createGoods_shopAdmin()" type="text">
+									</div>
+									<div class="form-group">
+										<label for="goodsSuggest">商品介绍</label>
+										<textarea class="form-control" id="goodsSuggest" name="goodsSuggest" rows="3"></textarea>
+									</div>
+									<div class="col-sm-4 input-group">
+										<label for="goods_class">商品标签</label>
+										<select class="province form-control" id="goods_class" onclick="get_Keyword()">
+											<option>请选择类型</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="goodsPrice">商品价格</label>
+										<input class="form-control" id="goodsPrice" name="goodsPrice" type="number">
+									</div>
+									<div class="form-group">
+										<label for="goodsImg">上传商品样例</label>
+										<input id="goodsImg" name="goodsImg" type="file">
+										<p class="help-block">上传10MB以下的 JPG, PNG图片</p>
+									</div>
+									<div class="alert alert-danger" role="alert" th:if="${Tshi}!=null"><a
+											th:text="${Tshi}"></a></div>
+									<button class="btn btn-default" type="submit">上架</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane " id="tab1" role="tabpanel">
+						<div id="shop_shopMessage">
+						</div>
+					</div>
+					<div class="tab-pane" id="tab3" role="tabpanel" th:if="${dataShow}=='yes'">数据详情</div>
+					<div class="tab-pane" id="tab4" role="tabpanel" th:if="${staffCreate}=='yes'">
+						<p class="bg-primary">员工管理</p>
+						<div class="alert alert-success" role="alert">我的员工</div>
+						  <table class="table">
+                             <thead>
+							 <tr>
+								 <th>员工ID</th>
+								 <th>职位</th>
+								 <th>薪资</th>
+								 <th>入职时间</th>
+								 <th>操作</th>
+							 </tr>
+							 </thead>
+							  <tbody id="shop_staffList_table">
+							  </tbody>
+						   </table>
+					    <div class="alert alert-success" role="alert">添加新员工</div>
+					     <div class="form-group">
+					     <label for="staff">员工id</label>
+					     <input class="form-control" id="staff" onblur="goodsEnterOne()" type="text">
+						 <div id="Tshi"  th:if="${Tshi!=''}">
+						  <span class="help-block" id="helpBlock2"  th:if="${Tshi!=''}" th:text="${Tshi}" ></span>
+						</div>
+					  </div>
+					  <div>
+						  <label for="shop_select">选择职位</label>
+						  <select id="shop_select"  name="hat">
+						  		<option>请选择职位</option>	
+								<option>销售</option>
+								<option>客服</option>
+						  </select>
+					  </div>
+						<div class="form-group">
+							<label for="money">工资</label>
+							<input class="form-control" id="money" name="goodsPrice" type="number">
+						</div>
+						<button class="btn btn-default" data-content="添加后待对方同意后入职!"
+								onclick="createStaff()" type="submit">添加
+						</button>
+					</div>
+					<div class="tab-pane" id="tab5" role="tabpanel">客服管理</div>
+				</div>
+			</div>
+		</div>
+		<div style="width:300px;margin:0 auto; padding:20px 0;">
+			<p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"><a
+					href="https://beian.miit.gov.cn/#/Integrated/recordQuery">备案号: 赣ICP备2021007427号</a></p></a>
+		</div>
+	</body>
 </html>

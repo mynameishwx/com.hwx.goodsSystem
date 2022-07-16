@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hwx.goodsSystem.Dao.userDao">
+
+
     <resultMap id="user" type="com.hwx.goodsSystem.entity.user">
         <id column="id" property="id" />
         <result column="user_Name" property="userName"/>
@@ -29,13 +31,13 @@
 
     <update id="updateUser" keyProperty="id" useGeneratedKeys="true" >
         update  goodsSystem.user set
-        <if test="petName!=''">pet_Name=#{petName}</if>
-        <if test="petName!='' and imageUrl!=''">and</if>
-        <if test="imageUrl!=''">image_Url=#{imageUrl}</if>
-        <if test="imageUrl!='' and dwell!=''">and</if>
-        <if test="dwell!=''">dwell=#{dwell}</if>
-        <if test="dwell!='' and signature!=''">and</if>
-        <if test="signature!=''">signature=#{signature}</if>
+        <if test="petName!=null">pet_Name=#{petName}</if>
+        <if test="petName!=null and imageUrl!=null">,</if>
+        <if test="imageUrl!=null">image_Url=#{imageUrl}</if>
+        <if test="imageUrl!=null and dwell!=null">,</if>
+        <if test="dwell!=null">dwell=#{dwell}</if>
+        <if test="dwell!=null and signature!=null">,</if>
+        <if test="signature!=null">signature=#{signature}</if>
         update_Time=#{updateTime}  where id=#{id} ;
     </update>
 

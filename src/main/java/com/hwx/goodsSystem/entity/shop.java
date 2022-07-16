@@ -22,6 +22,10 @@ public class shop implements Serializable {
     private String  shopName;
 
     /**
+     * 店铺头像Url
+     */
+    private String  shopImgUrl;
+    /**
      * 店铺类型
      */
     private Integer shopClass;

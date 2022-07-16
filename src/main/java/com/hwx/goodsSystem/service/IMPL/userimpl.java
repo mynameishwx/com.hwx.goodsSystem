@@ -47,6 +47,7 @@ public class userimpl implements userService {
          * 用户注册
          */
         userDao.createUser(user);
+
         /**
          * 创建普通用户
          */
@@ -102,8 +103,8 @@ public class userimpl implements userService {
         int  x= Random.nextInt(5)+1;
         String salt="";
         for (int i = 0; i <x; i++) {
-            x= Random.nextInt(30)+1;
-            salt= String.valueOf(saltShiro.charAt(x))+salt;
+            int p= Random.nextInt(30)+1;
+            salt= String.valueOf(saltShiro.charAt(p))+salt;
         }
         /**
          * 进行MD5加密，这里的散列次数要与配置的散列次数一致

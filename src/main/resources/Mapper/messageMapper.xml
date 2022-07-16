@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hwx.goodsSystem.Dao.messageDao">
+    <resultMap id="message" type="com.hwx.goodsSystem.entity.message">
+        <id column="id" property="id"/>
+        <result column="write_Id" property="writeId"/>
+        <result column="read_Id" property="readId"/>
+        <result column="message_Power" property="messagePower"/>
+        <result column="message_Class" property="messageClass"/>
+        <result column="message_State" property="messageState"/>
+        <result column="write_Read" property="writeRead"/>
+        <result column="message" property="message"/>
+        <result column="extend_One" property="extendOne"/>
+        <result column="extend_Two" property="extendTwo"/>
+        <result column="create_Time" property="createTime"/>
+        <result column="update_Time" property="updateTime"/>
+    </resultMap>
+    <insert id="createMessage" parameterType="com.hwx.goodsSystem.entity.message" useGeneratedKeys="true" keyProperty="id">
+        insert into goodsSystem.message( write_Id, read_Id, message_power, message_Class, message_state, write_Read, message, extend_One, extend_Two,create_Time, update_Time) VALUES
+    (#{writeId},#{readId},#{messagePower},#{messageClass},#{messageState},#{writeRead},#{message},#{extendOne},#{extendTwo},#{createTime},#{updateTime});
+    </insert>
+
+
+    <delete id="deleteMessage" parameterType="integer">
+        delete from goodsSystem.message where id=#{id};
+    </delete>
+
+    <delete id="deleteMessageLogo" parameterType="string">
+        delete from goodsSystem.message where write_Read=#{logo};
+    </delete>
+
+    <update id="updateMessageState" parameterType="com.hwx.goodsSystem.entity.message" keyProperty="id" useGeneratedKeys="true">
+        update goodsSystem.message set message_state=#{messageState} ,update_Time=#{updateTime}
+        where id=#{id};
+    </update>
+
+    <select id="getMessageById" parameterType="integer" resultMap="message" >
+        select id,  write_Id, read_Id, message_power, message_Class, message_state, write_Read, message, create_Time, update_Time
+  from goodsSystem.message where id=#{id};
+    </select>
+
+    <select id="getMessageByLogo" resultMap="message" parameterType="string">
+        select id,  write_Id, read_Id, message_power,  message_Class, message_state, write_Read, message, create_Time, update_Time
+        from goodsSystem.message <where>
+        write_Read=#{writeRead}
+        <if test="messageClass!=null">and message_Class=#{messageClass}</if>
+    </where>
+    </select>
+
+    <select id="getMessageMy" parameterType="integer" resultMap="message">
+        select id,  write_Id, read_Id, message_power,  message_Class, message_state, write_Read, message, create_Time, update_Time
+        from goodsSystem.message where read_Id=#{readId};
+    </select>
+
+    <select id="getMessageNoMy" resultMap="message" parameterType="integer">
+        select id,  write_Id, read_Id, message_power,  message_Class, message_state, write_Read, message, create_Time, update_Time
+        from goodsSystem.message where message_state=0 and read_Id=#{readId};
+    </select>
+</mapper>
