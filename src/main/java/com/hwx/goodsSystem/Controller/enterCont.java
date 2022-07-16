@@ -1,10 +1,10 @@
 package com.hwx.goodsSystem.Controller;
 
+import com.hwx.goodsSystem.entity.goods;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.entity.user;
 import com.hwx.goodsSystem.entity.userRole;
-import com.hwx.goodsSystem.service.IMPL.messageGoodsIMPL;
-import com.hwx.goodsSystem.service.goodsService;
+import com.hwx.goodsSystem.service.IMPL.enterIMPL;
 import com.hwx.goodsSystem.service.sessionService;
 import com.hwx.goodsSystem.service.userRoleService;
 import com.hwx.goodsSystem.service.userService;
@@ -17,10 +17,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 登录，注册，首页
@@ -28,11 +27,11 @@ import java.util.UUID;
 @Slf4j
 @Controller
 public class enterCont {
+
+
     @Autowired
     private goodsThreadLocal goodsThreadLocal;
 
-    @Autowired
-    private goodsService goodsService;
 
     @Autowired
     private userService userService;
@@ -46,15 +45,27 @@ public class enterCont {
     @Autowired
     private goodsJWT goodsJWT;
 
+
+    private enterIMPL enterIMPL;
+
+    /**
+     * set导入
+     *
+     * @param enterIMPL
+     */
     @Autowired
-    private messageGoodsIMPL messageGoodsIMPL;
+    public void setEnterIMPL(enterIMPL enterIMPL) {
+        this.enterIMPL = enterIMPL;
+    }
+
 
     /**
      * 进入首页
+     *
      * @return
      */
     @GetMapping("/")
-    public  String  index_two(Map<String,Object> map){
+    public String index_two(Map<String, Object> map) {
 
         /**
          * 目的是让其走拦截器，不直接到静态页面
@@ -128,9 +139,9 @@ public class enterCont {
      */
     @PostMapping("/login/enter")
     public String enter(@RequestParam("name")String name,
-                                      @RequestParam("password")String password,
-                                      HttpSession HttpSession,
-                                      Map<String,String> map) throws  RuntimeException{
+                        @RequestParam("password")String password,
+                        HttpSession HttpSession,
+                        Map<String,String> map) throws  RuntimeException{
         Subject Subject= SecurityUtils.getSubject();
         /**
          *  获取正在登录的用户的信息
@@ -147,36 +158,102 @@ public class enterCont {
         UsernamePasswordToken token=new UsernamePasswordToken(name,password);
         Subject.login(token);
 
+
         /**
          * 产生JWT令牌
          */
-        String sessionUUID= UUID.randomUUID().toString();
-        Map<String,String> StringMap=new HashMap<>();
-        StringMap.put("session",sessionUUID);
-        String session=goodsJWT.getJwt(StringMap);
+        String sessionUUID = UUID.randomUUID().toString();
+        Map<String, String> StringMap = new HashMap<>();
+        StringMap.put("session", sessionUUID);
+        String session = goodsJWT.getJwt(StringMap);
 
         /**
          * 将jwt令牌当成session存入数据库
          */
-        sessionService.createSession(new session(null,user.getId(),session,null,null));
+        session sessionEntity = new session();
+        sessionEntity.setUserId(user.getId());
+        List<session> sessionList = new ArrayList<>();
+
+        /**
+         * 根据用户ID查询Session
+         */
+        sessionList = sessionService.getSession(sessionEntity);
+
+        /**
+         * 没有session则直接存入
+         */
+        if (sessionList.size() == 0) {
+            sessionService.createSession(new session(null, user.getId(), session, 0, null, null));
+        } else {
+            /**
+             * 将之前的session状态改为1(掉线状态)
+             */
+            Iterator<session> sessionIt = sessionList.iterator();
+            while (sessionIt.hasNext()) {
+                sessionEntity = sessionIt.next();
+                if (sessionEntity.getSession() == session) {
+                    break;
+                }
+                /**
+                 * 将这个用户session状态不为0的删除
+                 */
+                if (sessionEntity.getExist() != 0) {
+                    sessionService.deleteSessionByid(sessionEntity.getId());
+                }
+                sessionEntity.setExist(1);
+                sessionService.updateSession(sessionEntity);
+            }
+            sessionService.createSession(new session(null, user.getId(), session, 0, null, null));
+        }
 
         /**
          * 将产生的UUID放到session中
          */
-        HttpSession.setAttribute("session",session);
+        HttpSession.setAttribute("session", session);
 
 
         /**
          *  判断返回普通页面还是管理员界面
          */
-        userRole userRolle=userRoleService.getUserRoleByUserId(user.getId());
+        userRole userRolle = userRoleService.getUserRoleByUserId(user.getId());
         log.info("成功登录");
-        return  "redirect:/";
+        return "redirect:/";
+    }
+
+    /**
+     * 判断是否异地登录
+     *
+     * @return
+     */
+    @PostMapping("/enter/error")
+    @ResponseBody
+    public String enterError() {
+        user user = new user();
+        user = goodsThreadLocal.getUser();
+        List<session> sessionList = new ArrayList<>();
+        if (user != null) {
+            sessionList = sessionService.getSessionByUserId(user.getId());
+        }
+        Iterator<session> sessionIterator = sessionList.iterator();
+        session sesseion = new session();
+        while (sessionIterator.hasNext()) {
+            sesseion = sessionIterator.next();
+            if (sesseion.getExist() == 2) {
+                goodsThreadLocal.setUser(null);
+                sessionService.deleteSessionByid(sesseion.getId());
+                return "2";
+            } else {
+                return "1";
+            }
+        }
+        log.warn("未登录");
+        return "0";
     }
 
 
     /**
      * 登录时查询用户是否已注册(ajax)
+     *
      * @param name
      * @return
      */
@@ -200,9 +277,9 @@ public class enterCont {
      */
     @PostMapping("/login/enroll")
     public String enroll(@RequestParam(value = "name")String name,
-                                       @RequestParam(value = "password")String password,
-                                       @RequestParam(value = "passwordTwo")String passwordTwo,
-                                       Map<String,String> map,HttpSession HttpSession) {
+                         @RequestParam(value = "password")String password,
+                         @RequestParam(value = "passwordTwo")String passwordTwo,
+                         Map<String,String> map, HttpSession HttpSession) {
         if (password.equals(passwordTwo)) {
             if (!name.equals("") && !password.equals("")) {
                 user user = new user();
@@ -216,12 +293,27 @@ public class enterCont {
             /**
              * 登录
              */
-            this.enter(name,password,HttpSession,map);
+            this.enter(name, password, HttpSession, map);
             return "redirect:/";
-        }else {
-            map.put("Tshi","密码不一致!");
-            return  "enroll";
+        } else {
+            map.put("Tshi", "密码不一致!");
+            return "enroll";
         }
     }
 
+    /**
+     * 首页获取不同商品
+     *
+     * @param start
+     * @param stop
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/index/getGoodsList")
+    public List<goods> index_getGoodsList(Integer start, Integer stop, Integer goodsClass) {
+        if (stop > start && start >= 0 && stop > 0 && goodsClass >= 0) {
+            return enterIMPL.enterGoodsMark(start, stop, goodsClass);
+        }
+        return null;
+    }
 }

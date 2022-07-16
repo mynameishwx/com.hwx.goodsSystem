@@ -48,16 +48,22 @@ user	用户拦截器。eg：登录后（authc），第二次没登陆但是有�
      /**
       * 商铺管理
       */
-     String.put("/shop/**","authc");
+     String.put("/shop/**", "authc");
      /**
       * 设置管理
       */
-     String.put("/setting/**","authc");
+     String.put("/setting/**", "authc");
+
+     /**
+      * 订单管理
+      */
+     String.put("/order/**", "authc");
+
 
      /**
       * 好友管理
       */
-     String.put("/crony/**","authc");
+     String.put("/crony/**", "authc");
 
 
      /**
@@ -110,5 +116,6 @@ user	用户拦截器。eg：登录后（authc），第二次没登陆但是有�
      goodsRealm.setCredentialsMatcher(HashedCredentialsMatcher);
 
      return  goodsRealm;
+
  }
 }

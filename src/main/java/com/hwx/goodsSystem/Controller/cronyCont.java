@@ -8,10 +8,12 @@ import com.hwx.goodsSystem.service.messageService;
 import com.hwx.goodsSystem.service.staffService;
 import com.hwx.goodsSystem.service.userService;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +24,6 @@ import java.util.Map;
  * 我的信息
  */
 @Controller
-@RequiresPermissions("user:*:*")
 public class cronyCont {
 
     @Autowired
@@ -41,22 +42,31 @@ public class cronyCont {
     private userService userService;
 
     @GetMapping("/crony")
-    public String crony(Map<String,Object>map){
-        /**
-         * 信息
-         */
-        map=messageGoodsIMPL.messageDaoCrony(map,1);
-        return "crony";
+    public String crony(Map<String, Object> map) {
+
+        goodsThreadLocal.getUser();
+        if (goodsThreadLocal.getUser() == null) {
+            map.put("enter_error", "1");
+            return "crony";
+        } else {
+            map.put("enter_error", "0");
+            /**
+             * 信息
+             */
+            map = messageGoodsIMPL.messageDaoCrony(map, 1);
+            return "crony";
+        }
+
     }
 
     @PostMapping("/crony/shopOK")
     @ResponseBody
-    public String shopOk(@RequestParam("writeName")String writeName){
+    public String shopOk(@RequestParam("writeName") String writeName) {
         /**
          * 发送人信息
          */
-        user user=new user();
-        user= userService.getUser(writeName);
+        user user = new user();
+        user = userService.getUser(writeName);
 
         /**
          * 查询入职信息
@@ -102,10 +112,14 @@ public class cronyCont {
      */
     @PostMapping("/crony/messageSize")
     @ResponseBody
-    public String messageSize(){
-        List<message> messageList=new ArrayList<>();
-        messageList=messageService.getMessageNoMy(goodsThreadLocal.getUser().getId());
-        return messageList.size()+"";
+    public String messageSize() {
+        if (goodsThreadLocal.getUser() != null) {
+            List<message> messageList = new ArrayList<>();
+            messageList = messageService.getMessageNoMy(goodsThreadLocal.getUser().getId());
+            return messageList.size() + "";
+        } else {
+            return "未登录";
+        }
     }
 
     /**

@@ -8,9 +8,6 @@ import com.hwx.goodsSystem.service.IMPL.shopGoodsIMPL;
 import com.hwx.goodsSystem.service.goodsService;
 import com.hwx.goodsSystem.service.keywordService;
 import com.hwx.goodsSystem.service.shopService;
-import com.hwx.goodsSystem.service.staffService;
-import com.hwx.goodsSystem.util.goodsThreadLocal;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +157,7 @@ public class goodsCont {
     @RequiresPermissions("admin:shop:goods")
     @ResponseBody
     public List<goods> goodsList(Integer start,Integer stop){
+        log.warn("测试");
         List<goods> goodsList=new ArrayList<>();
         //获取总条数
         goodsList=goodsService.getGoodsShopId(shopService.getEnterByShop().getId());

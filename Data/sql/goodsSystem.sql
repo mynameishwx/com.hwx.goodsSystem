@@ -48,11 +48,13 @@ create table  shop(
 );
 #sessionID表
 create table session(
-                        id int primary key auto_increment,
+                        id          int primary key auto_increment,
 
-                        user_Id  int  not null,
+                        user_Id     int          not null,
 
-                        session  varchar(200) not null,
+                        session     varchar(200) not null,
+
+                        exist       int          not null,
 
                         create_Time datetime,
 
@@ -155,32 +157,58 @@ create table goods_sensitive(
 );
 #标签表
 create table keyword(
-    id int primary key auto_increment,
-    class_Text varchar(50),
-    superior int,
-    extend_One  varchar(50), # 扩展字段1
-    extend_Two  varchar(50), # 扩展字段2
-    create_Time datetime,
-    update_Time datetime
+                        id          int primary key auto_increment,
+                        class_Text  varchar(50),
+                        superior    int,
+                        extend_One  varchar(50), # 扩展字段1
+                        extend_Two  varchar(50), # 扩展字段2
+                        create_Time datetime,
+                        update_Time datetime
 );
 #商品标签表
-create table goodsKeyword(
-    id int primary key auto_increment,
-    goods_Id int not null,
+create table goodsKeyword
+(
+    id          int primary key auto_increment,
+    goods_Id    int not null,
     superior_Id int not null,
     create_Time datetime,
     update_Time datetime
 );
+#商品_推荐表
+create table goods_mark
+(
+    id              int primary key auto_increment,
+    goods_id        int not null,
+    system_number   int DEFAULT 0,#系统推荐数
+    purchase_number int DEFAULT 0,#购买成功数
+    thumbs_number   int DEFAULT 0,#点赞数
+    praise_number   int DEFAULT 0,#好评数
+    negative_number int DEFAULT 0,#差评数
+    read_number     int DEFAULT 0,#阅读量
+    search_number   int DEFAULT 0,#搜索次数
+    collect_number  int DEFAULT 0,#收藏数
+    forward_number  int DEFAULT 0,#转发数
+    sum_mark        int DEFAULT 0, #总分数
+    create_Time     datetime,
+    update_Time     datetime
+);
 #user
-INSERT INTO `user` VALUES (1, 'admin', '50433ae85d25bd3ad9b412358acfaa2d', NULL, NULL, '5', NULL, NULL, NULL, NULL, '2022-06-09 22:35:04', '2022-06-09 22:35:04');
+INSERT INTO `user`
+VALUES (1, 'admin', '50433ae85d25bd3ad9b412358acfaa2d', NULL, NULL, '5', NULL, NULL, NULL, NULL, '2022-06-09 22:35:04',
+        '2022-06-09 22:35:04');
 
 #user_role
-INSERT INTO `user_role` VALUES (1, 1, 2, '2022-06-09 22:35:04', '2022-06-09 22:39:01');
+INSERT INTO `user_role`
+VALUES (1, 1, 2, '2022-06-09 22:35:04', '2022-06-09 22:39:01');
 # role
-INSERT INTO `role` VALUES (1, 'user', '2022-04-17 09:07:24', '2022-04-17 09:07:24');
-INSERT INTO `role` VALUES (2, 'admin', '2022-04-17 09:07:24', '2022-04-17 09:07:24');
-INSERT INTO `role` VALUES (3, 'goodsAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
-INSERT INTO `role` VALUES (4, 'shopAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
+INSERT INTO `role`
+VALUES (1, 'user', '2022-04-17 09:07:24', '2022-04-17 09:07:24');
+INSERT INTO `role`
+VALUES (2, 'admin', '2022-04-17 09:07:24', '2022-04-17 09:07:24');
+INSERT INTO `role`
+VALUES (3, 'goodsAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
+INSERT INTO `role`
+VALUES (4, 'shopAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
 INSERT INTO `role` VALUES (5, 'commonAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
 INSERT INTO `role` VALUES (6, 'serverAdmin', '2022-04-18 20:28:40', '2022-04-18 20:28:40');
 
@@ -213,13 +241,31 @@ INSERT INTO `keyword` VALUES (5, '药品', NULL, NULL, NULL, '2022-06-18 16:56:0
 INSERT INTO `keyword` VALUES (6, '休闲食品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
 INSERT INTO `keyword` VALUES (7, '常用工具', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
 INSERT INTO `keyword` VALUES (8, '医疗器材', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (9, '厨房用品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (10,'家居用品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (11,'服装', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (12, '化妆品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (13, '植物花卉', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (14, '手机', 4, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (15, '电脑', 4, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (16, '乒乓球拍', 3, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (17, '螺丝刀', 7, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
-INSERT INTO `keyword` VALUES (18, '菜刀', 9, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (9, '厨房用品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (10, '家居用品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (11, '服装', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (12, '化妆品', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (13, '植物花卉', NULL, NULL, NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (14, '手机', 4, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (15, '电脑', 4, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (16, '乒乓球拍', 3, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (17, '螺丝刀', 7, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+INSERT INTO `keyword`
+VALUES (18, '菜刀', 9, '2', NULL, '2022-06-18 16:56:04', '2022-06-18 16:56:04');
+
+#goodsMark
+INSERT INTO `goods_mark`
+VALUES (1, 0, 6, 4, 1, 2, 1, 1, 1, 1, 1, 0, '2022-07-09 00:45:19', '2022-07-09 00:45:19');
+INSERT INTO `goods_mark`
+VALUES (2, 0, 2, 3, 4, 4, 1, 2, 2, 2, 2, 0, '2022-07-09 00:45:19', '2022-07-09 00:45:19');
+INSERT INTO `goods_mark`
+VALUES (3, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, '2022-07-09 00:45:19', '2022-07-09 00:45:19');

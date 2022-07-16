@@ -1,7 +1,6 @@
 package com.hwx.goodsSystem.service.IMPL;
 
 import com.hwx.goodsSystem.Dao.shopDao;
-import com.hwx.goodsSystem.Dao.userDao;
 import com.hwx.goodsSystem.Dao.userRoleDao;
 import com.hwx.goodsSystem.entity.keyword;
 import com.hwx.goodsSystem.entity.shop;
@@ -12,7 +11,6 @@ import com.hwx.goodsSystem.service.shopService;
 import com.hwx.goodsSystem.service.staffService;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.compiler.ast.Keyword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,15 +94,21 @@ public class shopimpl implements shopService {
          * 将店铺信息持有
          */
         if(shop==null){
-            staff staff=new staff();
+            staff staff = new staff();
             staff.setUserId(goodsThreadLocal.getUser().getId());
             staff.setStaffState(1);
-            staff=staffService.getStaffByUserId(staff);
-            shop=this.getShopByAdminId(staff.getShopId());
-            if(shop==null){
+            staff = staffService.getStaffByUserId(staff);
+            if (staff != null) {
+                shop = this.getShopByAdminId(staff.getShopId());
+                if (shop == null) {
+                    log.warn("当前用户没有所属店铺!");
+                    return null;
+                }
+            } else {
                 log.warn("当前用户没有所属店铺!");
                 return null;
             }
+
         }
         return shop;
     }

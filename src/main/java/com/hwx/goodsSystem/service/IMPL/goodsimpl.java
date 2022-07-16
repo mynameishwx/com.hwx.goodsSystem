@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class goodsimpl implements goodsService {
 
+
     @Autowired
     private goodsDao goodsDao;
 

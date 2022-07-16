@@ -48,7 +48,7 @@ public class goods implements Serializable {
     private Integer goodsMoney;
 
     /**
-     * 商品关键字
+     * 商品搜索关键字
      */
     private String  keyword;
 

@@ -6,13 +6,14 @@
         <id column="id" property="id" />
         <result column="user_Id" property="userId" />
         <result column="session" property="session" />
+        <result column="exist" property="exist"/>
         <result column="create_Time" property="createTime"/>
         <result column="update_Time" property="updateTime" />
     </resultMap>
 
     <insert id="createSession" parameterType="com.hwx.goodsSystem.entity.session" keyProperty="id" useGeneratedKeys="true">
-        insert into  goodsSystem.session( user_Id, session, create_Time, update_Time) VALUES
-        (#{userId},#{session},#{createTime},#{updateTime});
+        insert into goodsSystem.session(user_Id, session, exist, create_Time, update_Time)
+        VALUES (#{userId}, #{session}, #{exist}, #{createTime}, #{updateTime});
     </insert>
 
     <delete id="deleteSessionByid" parameterType="integer" >
@@ -23,23 +24,38 @@
         delete from goodsSystem.session where user_Id=#{userId};
     </delete>
 
-    <update id="updateSession" parameterType="com.hwx.goodsSystem.entity.session" >
-        update goodsSystem.session set  update_Time=#{updateTime}  where id=#{id} ;
+    <update id="updateSession" parameterType="com.hwx.goodsSystem.entity.session">
+        update goodsSystem.session set update_Time=#{updateTime}
+        <if test="exist!=null">, exist=#{exist}</if>
+        where id=#{id} ;
     </update>
 
     <select id="getSessionByid" parameterType="integer" resultMap="session" >
-        select  id, user_Id, session, create_Time, update_Time from goodsSystem.session where
-        id=#{id};
+        select id, user_Id, session, exist, create_Time, update_Time
+        from goodsSystem.session
+        where id = #{id};
     </select>
 
 
-    <select id="getSessionByUserId" resultMap="session" parameterType="integer" >
-        select  id, user_Id, session, create_Time, update_Time from goodsSystem.session where
-        user_Id=#{userId};
+    <select id="getSessionByUserId" resultMap="session" parameterType="integer">
+        select id, user_Id, session, exist, create_Time, update_Time
+        from goodsSystem.session
+        where user_Id = #{userId};
     </select>
 
     <select id="getSessionBySession" parameterType="string" resultMap="session">
-        select id, user_Id, session, create_Time, update_Time  from goodsSystem.session where
-            session=#{session};
+        select id, user_Id, session, exist, create_Time, update_Time
+        from goodsSystem.session
+        where session = #{session};
+    </select>
+
+    <select id="getSession" parameterType="com.hwx.goodsSystem.entity.session" resultMap="session">
+        select id, user_Id, session,exist, create_Time, update_Time from goodsSystem.session
+        <where>
+            1=1
+            <if test="userId!=null">and user_Id=#{userId}</if>
+            <if test="session!=null">and goodsSystem.session.session=#{session}</if>
+            <if test="exist!=null">and exist=#{exist}</if>
+        </where>
     </select>
 </mapper>

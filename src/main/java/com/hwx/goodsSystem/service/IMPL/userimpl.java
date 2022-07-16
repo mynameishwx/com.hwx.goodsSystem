@@ -47,6 +47,7 @@ public class userimpl implements userService {
          * 用户注册
          */
         userDao.createUser(user);
+
         /**
          * 创建普通用户
          */

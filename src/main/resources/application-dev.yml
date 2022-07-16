@@ -20,7 +20,7 @@ spring:
     host: 124.220.168.113
     port: 5672
     username: admin
-    password: [<Hwx20011125>]
+    password: [ <Hwx20011125> ]
   redis:
     host: 121.5.199.228
     port: 6379
@@ -28,17 +28,15 @@ spring:
     connect-timeout: 180000  #连接超过时间
 
 #打印执行的SQL语句，测试可开
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #店铺头像存放地址
 shop:
-  imgNameUrl:  "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/shopImg/"
+  imgNameUrl: "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/shopImg/"
 
-#商品头像存放地址
 goods:
-  imgNameUrl:  "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/goodsImg/"
+  #商品头像存放地址
+  imgNameUrl: "E:/IDEA_Project/com.hwx.goodsSystem/Data/img/goodsImg/"
 
-SENSITIVE:
-    text: "操逼"

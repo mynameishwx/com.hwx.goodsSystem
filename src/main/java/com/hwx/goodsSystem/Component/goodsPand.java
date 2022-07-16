@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hwx.goodsSystem.entity.role;
 import com.hwx.goodsSystem.entity.session;
 import com.hwx.goodsSystem.entity.user;
+import com.hwx.goodsSystem.service.IMPL.enterIMPL;
 import com.hwx.goodsSystem.service.roleService;
 import com.hwx.goodsSystem.service.sessionService;
 import com.hwx.goodsSystem.service.userRoleService;
@@ -15,10 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -41,6 +43,9 @@ public class goodsPand implements HandlerInterceptor {
 
     @Autowired
     private roleService roleService;
+
+    @Autowired
+    private enterIMPL enterIMPL;
     /**
      * 导入ThreadLocal
      */
@@ -49,9 +54,8 @@ public class goodsPand implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-      Object  sessiont=new Object();
-      sessiont= request.getSession().getAttribute("session");
+        Object sessiont = new Object();
+        sessiont = request.getSession().getAttribute("session");
       String token="";
         if(sessiont!=null){
           token= (String) sessiont;
@@ -61,16 +65,32 @@ public class goodsPand implements HandlerInterceptor {
                      * 验证JWT令牌
                      */
                     DecodedJWT validate = goodsJWT.validate(token);
+
                     /**
                      * 查询session
                      */
-                    session session=new session();
-                    session=sessionService.getSessionBySession(token);
-                    if(session!=null){
-                        /**
-                         * 将查询到的user装入ThreadLocal
-                         */
-                        goodsThreadLocal.setUser(userService.getUserById(session.getUserId()));
+                    session session = new session();
+                    /**
+                     * 判断用户有session是否有效
+                     */
+                    session.setSession(token);
+                    List<session> sessionList = new ArrayList<>();
+                    sessionList = sessionService.getSession(session);
+                    if (sessionList.size() != 0) {
+                        session = sessionList.get(0);
+                        int EXIST = session.getExist();
+                        if (EXIST == 0) {
+                            goodsThreadLocal.setUser(userService.getUserById(sessionList.get(0).getUserId()));
+                            return true;
+                        } else {
+                            goodsThreadLocal.setUser(userService.getUserById(sessionList.get(0).getUserId()));
+                            session.setExist(2);
+                            sessionService.updateSession(session);
+                            return true;
+                        }
+                    } else {
+                        goodsThreadLocal.setUser(null);
+                        return true;
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -78,7 +98,6 @@ public class goodsPand implements HandlerInterceptor {
                      * 令牌有问题，或者没有查询到session，则将user信息卸掉和将过期的session删除
                      */
                     goodsThreadLocal.setUser(null);
-
                     session session=new session();
                     session=sessionService.getSessionBySession(token);
                     if(session!=null){
@@ -87,8 +106,7 @@ public class goodsPand implements HandlerInterceptor {
 
                 }
             }
-       }
-
+        }
         return true;
     }
 
@@ -97,40 +115,41 @@ public class goodsPand implements HandlerInterceptor {
 
         user user=new user();
         user= goodsThreadLocal.getUser();
-        if(user!=null && modelAndView!=null){
+        if(user!=null && modelAndView!=null) {
             /**
              * 将密码与盐隐藏
              */
             user.setUserPassword(null);
-            if(user.getImageUrl()==null){
+            if (user.getImageUrl() == null) {
                 user.setImageUrl("/img/hwx.png");
             }
             /**
              * 将角色传递给前端
              */
-            role role= new role();
+            role role = new role();
 
-            role=roleService.getRoleById(userRoleService.getUserRoleByUserId(user.getId()).getRoleId());
-            if(role==null){
-                log.warn("查询用户权限为空 , 用户id :"+user.getId());
+            role = roleService.getRoleById(userRoleService.getUserRoleByUserId(user.getId()).getRoleId());
+            if (role == null) {
+                log.warn("查询用户权限为空 , 用户id :" + user.getId());
             }
-            if(!role.getRoleName().equals("user")){
-                modelAndView.addObject("role","shopAdmin");
+            if (!role.getRoleName().equals("user")) {
+                modelAndView.addObject("role", "shopAdmin");
             }
-            log.warn("用户角色为："+role.getRoleName());
+            log.warn("用户角色为：" + role.getRoleName());
             /**
-             * 置空
+             * 盐置空
              */
             user.setSalt(null);
             /**
              * 将user信息持有
              */
-            modelAndView.addObject("userLogin",user);
+            modelAndView.addObject("userLogin", user);
         }
+
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-              goodsThreadLocal.delete();
+        goodsThreadLocal.delete();
     }
 }

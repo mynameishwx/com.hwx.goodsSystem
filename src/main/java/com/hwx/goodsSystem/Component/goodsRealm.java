@@ -1,7 +1,13 @@
 package com.hwx.goodsSystem.Component;
 
-import com.hwx.goodsSystem.entity.*;
-import com.hwx.goodsSystem.service.*;
+import com.hwx.goodsSystem.entity.power;
+import com.hwx.goodsSystem.entity.rolePower;
+import com.hwx.goodsSystem.entity.user;
+import com.hwx.goodsSystem.entity.userRole;
+import com.hwx.goodsSystem.service.powerService;
+import com.hwx.goodsSystem.service.rolePowerService;
+import com.hwx.goodsSystem.service.userRoleService;
+import com.hwx.goodsSystem.service.userService;
 import com.hwx.goodsSystem.util.goodsThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
@@ -13,7 +19,6 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 

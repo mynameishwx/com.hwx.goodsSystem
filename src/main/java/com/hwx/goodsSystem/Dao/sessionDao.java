@@ -37,6 +37,13 @@ public interface sessionDao {
 
 
     /**
+     * 模糊查询
+     *
+     * @return
+     */
+    List<session> getSession(session session);
+
+    /**
      * 根据用户id查询
      */
     List<session> getSessionByUserId(Integer id);
